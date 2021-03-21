@@ -1,0 +1,62 @@
+/* cards */
+
+.card-row {
+	display: flex;
+	margin-left: -5px;
+	margin-right: -5px;
+	flex-wrap: wrap;
+	justify-content: space-between;
+
+	.card {
+		background-color: #fff;
+		margin-right: 5px;
+		margin-left: 5px;
+		flex: 1 0 290px;
+		position: relative;
+		margin-bottom: 10px;
+
+		h4 {
+			padding-top: 8px;
+			padding-left: 8px;
+			padding-right: 8px;
+		}
+
+		p {
+			padding-top: 5px;
+			padding-left: 8px;
+			padding-right: 8px;
+			padding-bottom: 5px;
+			margin-bottom: 12px;
+		}
+
+		figure {
+			/* height: 150px;*/
+			overflow: hidden;
+			padding: 5px 5px 0px 5px;
+			display: flex;
+			justify-content: center;
+		}
+
+		img {
+			max-width: 100%;
+			align-self: baseline;
+		}
+
+		footer {
+			padding-left: 8px;
+			color: #555;
+			padding-right: 8px;
+			margin-bottom: 12px;
+			display: flex;
+			justify-content: flex-end;
+
+			span.edit {
+				//cursor: pointer; TODO: Add animation: not clear
+			}
+
+			.material-icons {
+				vertical-align: -6px;
+			}
+		}
+	}
+}

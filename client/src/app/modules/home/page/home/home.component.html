@@ -1,0 +1,112 @@
+<div class="intro">
+
+    <div>
+        <h1>
+            Hi I'm Steve, a freelance .NET developer with over 15 years of experience.
+        </h1>
+        <h2>
+            I create, maintain and design systems written in C#, .NET Core, HTML,
+            JavaScript, Angular, MVC, Web Api and SQL.
+        </h2>
+
+        <div class="button-container">
+            <a href="https://github.com" color="primary" mat-button>Get the blog source code here!</a>
+        </div>
+    </div>
+    <blockquote>
+        <p>
+            A computer lets you make more mistakes faster than any other invention
+            with the possible exceptions of handguns and Tequila.
+        </p>
+        <cite>― Mitch Ratcliffe</cite>
+    </blockquote>
+</div>
+
+<h3>Latest Blog Articles</h3>
+
+<div *ngIf="vm$ | async as vm">
+    <div class="card-row">
+        <ng-container *ngFor="let post of vm.posts">
+            <app-blog-listing-item class="card box-shadow" [post]="post">
+            </app-blog-listing-item>
+        </ng-container>
+    </div>
+
+    <div class="button-bar">
+        <a class="add-article" routerLink="admin/blog/add/" *ngIf="vm.isAuthenticated">
+            <mat-icon *ngIf="vm.isAuthenticated" matListIcon routerLink="admin/blog/add/">add_circle_outline</mat-icon>
+            Add Article
+        </a>
+
+        <a class="read-more" routerLink="/blog">Read more...</a>
+    </div>
+
+</div>
+
+<h3>Social</h3>
+
+<div class="card-row">
+    <div class="card box-shadow so">
+        <figure>
+            <picture>
+                <source srcset="/assets/images/so2.webp" alt="Stack Overflow" type="image/webp">
+                <img src="/assets/images/so2.png" alt="Stack Overflow" />
+            </picture>
+        </figure>
+        <a href="https://stackoverflow.com/users/74178/countzero">
+            <img src="https://stackoverflow.com/users/flair/74178.png" class="so"
+                alt="profile for CountZero at Stack Overflow, Q&amp;A for professional and enthusiast programmers"
+                title="profile for CountZero at Stack Overflow, Q&amp;A for professional and enthusiast programmers" />
+        </a>
+    </div>
+    <div class="card box-shadow gitbox">
+        <figure>
+            <picture>
+                <source srcset="/assets/images/github.png" alt="GitHub" type="image/webp">
+                <img src="/assets/images/github.webp" alt="GitHub" />
+            </picture>
+        </figure>
+        <div class="git-card">
+            <div class="user-card">
+                <div class="header">
+                    <a class="avatar" href="https://github.com/Pastafarian">
+                        <img src="https://avatars0.githubusercontent.com/u/379692?s=42" alt="GitHub Avatar" />
+                    </a>
+                    <strong>Pastafarian
+                        <a class="button" href="https://github.com/Pastafarian">Follow</a>
+                    </strong>
+                    <span>@Pastafarian</span>
+                </div>
+                <ul class="status">
+                    <li>
+                        <a href="https://github.com/Pastafarian?tab=repositories">
+                            <strong>6</strong>Repos</a>
+                    </li>
+                    <li>
+                        <a href="https://gist.github.com/Pastafarian">
+                            <strong>0</strong>Gists</a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/Pastafarian?tab=following">
+                            <strong>6</strong>Following</a>
+                    </li>
+                </ul>
+                <div class="footer">.NET, C#, Developer, Web</div>
+            </div>
+        </div>
+    </div>
+    <div class="card box-shadow linked-in">
+        <figure>
+            <picture>
+                <source srcset="/assets/images/li.webp" alt="Linked In" type="image/webp">
+                <img src="/assets/images/li.png" alt="Linked In" />
+            </picture>
+        </figure>
+        <a href="https://uk.linkedin.com/in/stevedotnet">
+            <picture>
+                <source srcset="/assets/images/libadge.webp" alt="Linked In" type="image/webp">
+                <img src="/assets/images/libadge.png" alt="Linked In" />
+            </picture>
+        </a>
+    </div>
+</div>

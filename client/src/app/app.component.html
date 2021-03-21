@@ -1,0 +1,70 @@
+<mat-sidenav-container fullscreen>
+	<mat-sidenav #start>
+		<mat-nav-list>
+			<mat-list-item tabindex="-1" (click)="start.close()" title="Close">
+				<mat-icon class="centre">close</mat-icon>
+			</mat-list-item>
+			<mat-list-item routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+				<a>Home</a>
+				<mat-icon matListIcon>home</mat-icon>
+			</mat-list-item>
+			<mat-list-item routerLink="/blog" routerLinkActive="active">
+				<a>Blog</a>
+				<mat-icon matListIcon>comment</mat-icon>
+			</mat-list-item>
+			<mat-list-item routerLink="/hire" routerLinkActive="active">
+				<a>Hire</a>
+				<mat-icon matListIcon>laptop_mac</mat-icon>
+			</mat-list-item>
+			<mat-list-item routerLink="/contact" routerLinkActive="active">
+				<a>Contact</a>
+				<mat-icon matListIcon>mail_outline</mat-icon>
+			</mat-list-item>
+			<mat-list-item *ngIf="!auth.isAuthenticated()" (click)="auth.login()">
+				<a>Sign In</a>
+				<mat-icon matListIcon>lock</mat-icon>
+			</mat-list-item>
+			<mat-list-item *ngIf="auth.isAuthenticated()" (click)="auth.logout()">
+				<a>Sign Out</a>
+				<mat-icon matListIcon>cancel</mat-icon>
+			</mat-list-item>
+		</mat-nav-list>
+	</mat-sidenav>
+
+	<header class="app-header">
+		<a routerLink="/" href="" class="title">SA
+			<span>.</span>
+		</a>
+
+		<app-bread-crumbs></app-bread-crumbs>
+		<nav class="link-roll-effect">
+			<a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+				<span data-hover="Home">Home</span>
+			</a>
+			<a routerLink="/blog" routerLinkActive="active">
+				<span data-hover="Blog">Blog</span>
+			</a>
+			<a routerLink="/hire" routerLinkActive="active">
+				<span data-hover="Hire">Hire</span>
+			</a>
+			<a routerLink="/contact" routerLinkActive="active">
+				<span data-hover="Contact">Contact</span>
+			</a>
+			<a *ngIf="!auth.isAuthenticated()" (click)="auth.login()">
+				<mat-icon matListIcon>lock</mat-icon>
+			</a>
+			<a *ngIf="auth.isAuthenticated()" (click)="auth.logout()">
+				<mat-icon matListIcon>cancel</mat-icon>
+			</a>
+		</nav>
+		<button class="burger" aria-label="burger" mat-icon-button (click)="start.open('mouse')">
+			<mat-icon color="primary">menu</mat-icon>
+		</button>
+	</header>
+	<section class="content">
+		<div [@routerTransition]="getState(routerOutlet)">
+			<router-outlet #routerOutlet="outlet"></router-outlet>
+		</div>
+	</section>
+
+</mat-sidenav-container>

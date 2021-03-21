@@ -1,0 +1,16 @@
+@use "~@angular/material/theming" as t;
+
+body {
+	//	overflow-y: scroll;
+}
+
+.mat-drawer-container {
+	background: t.mat-color(t.$mat-red, 500, 1);
+}
+
+section.content {
+	padding: 0px 15px;
+	margin-left: auto;
+	margin-right: auto;
+	min-height: 500px;
+}

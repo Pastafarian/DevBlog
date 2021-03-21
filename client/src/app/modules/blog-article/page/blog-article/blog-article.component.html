@@ -1,0 +1,15 @@
+<article *ngIf="vm$ | async as vm">
+    <header>
+        <h1>{{ vm.post?.title }} </h1>
+        <time>{{ vm.post?.publishDateFriendlyText }}</time>
+    </header>
+
+    <main>
+        <img *ngIf="vm.post?.headerImage" src="{{vm.post?.headerImage}}" alt="{{ vm.post?.title }}" />
+        <div class="ql-snow">
+            <div class="ql-editor">
+                <div [innerHTML]="vm.post?.body"></div>
+            </div>
+        </div>
+    </main>
+</article>

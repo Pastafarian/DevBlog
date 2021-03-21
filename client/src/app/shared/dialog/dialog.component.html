@@ -1,0 +1,15 @@
+<h1 mat-dialog-title *ngIf="data.title">{{ data.title }}</h1>
+<div mat-dialog-content>
+	<pre>{{ data.message }}</pre>
+</div>
+<div mat-dialog-actions align="end">
+
+	<button mat-raised-button class="ok" color="data.okColour || 'warn'" (click)="ok()" *ngIf="!processing">
+		{{ data.okText || 'Ok' }}
+	</button>
+	<button mat-raised-button color="primary" (click)="dialogRef.close(false)" *ngIf="!data.hideCancel && !processing">
+		{{ data.cancelText || 'Cancel' }}
+	</button>
+
+	<mat-spinner diameter="20" color="primary" *ngIf="processing"></mat-spinner>
+</div>

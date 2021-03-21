@@ -1,0 +1,57 @@
+import { Component, OnInit } from '@angular/core';
+import { Post } from '@data/schema/post';
+import { SetBreadCrumb } from '@store/breadcrumb/breadcrumb.actions';
+import { Store, Select } from '@ngxs/store';
+import { AuthService } from '@core/services/auth.service';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { PostState } from '@store/post/post.state';
+import { map, switchMap, tap } from 'rxjs/operators';
+import { MatRadioChange } from '@angular/material/radio';
+
+interface BlogVm {
+  posts: Post[];
+  isAuthenticated: boolean;
+}
+
+@Component({
+  selector: 'app-blog',
+  templateUrl: './blog.component.html',
+  styleUrls: ['./blog.component.scss']
+})
+export class BlogComponent implements OnInit {
+
+  vm$: Observable<BlogVm>;
+
+  filterTerm$ = new BehaviorSubject('All');
+  @Select(PostState.selectFilteredPosts) filteredPosts$: Observable<(filter: string) => Post[]>;
+
+  constructor(private authService: AuthService, private store: Store) { }
+
+  ngOnInit() {
+
+    this.vm$ = this.filterTerm$.pipe(
+      tap(() =>
+        this.store.dispatch(
+          new SetBreadCrumb({
+            breadCrumbs: [
+              { name: 'Home', link: '/' },
+              { name: 'Blog', link: '/blog', last: true }
+            ]
+          })
+        )
+      ),
+      switchMap(filterTerm => this.filteredPosts$.pipe(
+        map(filteredPosts => filteredPosts(filterTerm))
+      )),
+      map(posts => {
+        return {
+          posts: posts,
+          isAuthenticated: this.authService.isAuthenticated()
+        };
+      }));
+  }
+
+  postFilterChange(event: MatRadioChange) {
+    this.filterTerm$.next(event.value);
+  }
+}

@@ -1,0 +1,29 @@
+<div class="close">
+	<div (click)="cancel()" class="close-box">
+		<mat-icon>close</mat-icon>
+	</div>
+</div>
+
+<div class="content">
+	<div class="dropzone" (fileDrop)="fileDropped($event)" (fileClick)="dropZoneClicked()" appDragAndDrop
+		[dragOverClass]="'file-drag-over'">
+
+		<image-cropper *ngIf="imageDialogOptions" [imageChangedEvent]="imageChangedEvent"
+			[imageFile]="imageFilesChangedEvent" [imageBase64]="imageBase64ChangedEvent" [maintainAspectRatio]="false"
+			[aspectRatio]="imageDialogOptions.aspectRatio" [cropperMinWidth]=" imageDialogOptions.minWidth"
+			[cropperMinHeight]="imageDialogOptions.minHeight" [onlyScaleDown]="true"
+			[roundCropper]="imageDialogOptions.roundCropper" format="png" outputType="base64"
+			(imageCropped)="imageCropped($event)" (imageLoaded)="imageLoaded()" (loadImageFailed)="loadImageFailed()">
+		</image-cropper>
+
+		<h3 *ngIf="!imageCroppedEvent">Drag an image here or click!</h3>
+		<input type="file" #fileInput (change)="fileChangeEvent($event)" />
+	</div>
+</div>
+
+<div class="spacer"></div>
+
+<div mat-dialog-actions class="buttons">
+	<button mat-flat-button color="primary" *ngIf="imageCroppedEvent" (click)="clear()" type="button">Clear</button>
+	<button mat-flat-button color="primary" *ngIf="imageCroppedEvent" (click)="save()" type="button">Save</button>
+</div>

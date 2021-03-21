@@ -1,0 +1,94 @@
+@use "~@angular/material/theming" as t;
+
+header.app-header {
+	font-family: Impact, Haettenschweiler, "Franklin Gothic Bold", Charcoal, "Helvetica Inserat",
+		"Bitstream Vera Sans Bold", "Arial Black", "sans serif";
+	background-color: #000;
+	display: flex;
+	margin-bottom: 25px;
+
+	@include t.mat-elevation(6);
+
+	> * {
+		display: flex;
+		align-items: flex-end;
+		padding-bottom: 7px;
+	}
+
+	a {
+		color: #fff;
+		text-decoration: none;
+	}
+
+	a.title {
+		font-size: 55px;
+		margin-left: 15px;
+		line-height: 55px;
+		position: relative;
+		top: 4px;
+		left: -7px;
+	}
+
+	a.title span {
+		color: #f44336;
+	}
+
+	nav {
+		display: flex;
+		margin-left: auto;
+		margin-right: 5px;
+
+		// link-roll-effect
+		a {
+			margin-left: 22px;
+			text-transform: uppercase;
+			font-size: 40px;
+			line-height: 44px;
+			margin: 0 13px;
+			text-decoration: none;
+			overflow: hidden;
+		}
+
+		a span {
+			position: relative;
+			display: inline-block;
+			transition: transform 0.3s;
+		}
+
+		a span::before {
+			position: absolute;
+			top: 100%;
+			content: attr(data-hover);
+			color: #f44336;
+		}
+
+		a:hover span,
+		a:focus span,
+		a.active span {
+			transform: translateY(-100%);
+		}
+	}
+
+	button.burger mat-icon {
+		font-size: 35px;
+		margin-right: 20px;
+	}
+
+	@media (max-width: 600px) {
+		nav {
+			display: none;
+		}
+		button.burger {
+			margin-left: auto;
+		}
+	}
+
+	@media (min-width: 600px) {
+		nav {
+			display: flex;
+		}
+		button.burger {
+			display: none;
+		}
+	}
+}

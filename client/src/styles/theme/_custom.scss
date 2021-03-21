@@ -1,0 +1,17 @@
+@use "~@angular/material/theming" as t;
+@include t.mat-core();
+
+$app-primary: t.mat-palette(t.$mat-red);
+$app-accent: t.mat-palette(t.$mat-pink);
+$app-warn: t.mat-palette(t.$mat-purple);
+$app-theme: t.mat-light-theme($app-primary, $app-accent, $app-warn);
+
+@include t.angular-material-theme($app-theme);
+
+/*
+Can add components individually if we need to reduce package size: 
+@include angular-material-theme($app-theme);
+@include mat-core-theme($candy-app-theme);
+@include mat-button-theme($candy-app-theme);
+@include mat-checkbox-theme($candy-app-theme);
+*/

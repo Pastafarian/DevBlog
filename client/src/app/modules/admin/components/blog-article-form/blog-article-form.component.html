@@ -1,0 +1,58 @@
+<mat-card>
+	<form [formGroup]="form" (ngSubmit)="save()" novalidate>
+
+		<app-image-editor (imageDeleted)="imageDeleted()" (imageSaved)="imageSaved($event)"
+			[imageUrl]="post?.headerImage">
+		</app-image-editor>
+
+		<mat-form-field class="full-width"
+			[ngClass]="{ 'has-error': form.get('title')?.touched || form.get('title')?.dirty }">
+			<input matInput formControlName="title" placeholder="Title (required)" maxlength="70" />
+			<mat-error *ngIf="form.get('title')?.hasError('required')" align="end">
+				Please enter a title
+			</mat-error>
+			<mat-error *ngIf="form.get('title')?.hasError('minlength')" align="end">
+				Title must be at least 10 characters
+			</mat-error>
+			<mat-hint align="end">{{ form.get('title')?.value.length }} / 25</mat-hint>
+		</mat-form-field>
+
+		<mat-form-field class="full-width"
+			[ngClass]="{ 'has-error': form.get('slug')?.touched || form.get('slug')?.dirty }">
+			<input matInput formControlName="slug" placeholder="Slug (required)" maxlength="70" />
+			<mat-error *ngIf="form.get('slug')?.hasError('required')" align="end">Please enter a slug</mat-error>
+			<mat-error *ngIf="form.get('slug')?.hasError('minlength')" align="end">
+				Slug must be at least 5 characters
+			</mat-error>
+			<mat-hint align="end">{{ form.get('slug')?.value.length }} / 25</mat-hint>
+		</mat-form-field>
+
+		<mat-form-field class="full-width"
+			[ngClass]="{ 'has-error': form.get('publishDate')?.touched || form.get('publishDate')?.dirty }">
+			<input matInput [matDatepicker]="datePicker" formControlName="publishDate"
+				placeholder="Publish Date (required)" />
+			<mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
+			<mat-datepicker #datePicker></mat-datepicker>
+			<mat-error *ngIf="form.get('publishDate')?.hasError('required')" align="end">Please enter publish date
+			</mat-error>
+		</mat-form-field>
+
+		<quill-editor (onEditorCreated)="onEditorCreated($event)" (onContentChanged)="onContentChanged($event)" #editor
+			formControlName="body" [styles]="{height: '400px'}">
+		</quill-editor>
+	</form>
+
+	<h2>Article Preview</h2>
+
+	<div class="ql-snow preview">
+		<div [innerHTML]="preview" class="ql-editor">
+		</div>
+	</div>
+
+	<div class="button-bar">
+		<mat-spinner diameter="20" color="primary" *ngIf="processing"></mat-spinner>
+		<button class="save" (click)="save()" mat-flat-button color="primary" [disabled]="processing">
+			Save
+		</button>
+	</div>
+</mat-card>

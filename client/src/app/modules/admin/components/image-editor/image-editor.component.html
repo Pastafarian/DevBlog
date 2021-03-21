@@ -1,0 +1,20 @@
+<div class="container">
+	<mat-card>
+		<mat-card-header *ngIf="title">
+			<mat-card-title>{{ title }}</mat-card-title>
+		</mat-card-header>
+
+		<mat-icon *ngIf="!imageUrl">insert_photo</mat-icon>
+		<img *ngIf="imageUrl" [src]="imageUrl || ''" [style.borderRadius]="roundCropper ? '50%' : '0'" />
+
+		<div class="button-bar">
+			<mat-spinner diameter="20" color="primary" *ngIf="imageProcessing"></mat-spinner>
+			<button mat-button (click)="deleteImage()" type="button" [disabled]="imageProcessing || !imageUrl">
+				Delete Image
+			</button>
+			<button mat-flat-button color="primary" (click)="setImage()" type="button" [disabled]="imageProcessing">
+				Set Image
+			</button>
+		</div>
+	</mat-card>
+</div>

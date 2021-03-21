@@ -1,0 +1,28 @@
+<div [routerLink]="['/blog/', post.slug]">
+    <figure>
+        <img *ngIf="post.headerImage && post.headerImage.indexOf('http') < 0" src="/assets/images/{{post.headerImage}}"
+            alt="{{post.title}}" />
+        <img *ngIf="post.headerImage && post.headerImage.indexOf('http') > -1" src="{{post.headerImage}}"
+            alt="{{post.title}}" />
+
+        <!-- TODO-->
+        <img *ngIf="!post.headerImage" src="https://www.thetimes.co.uk/d/assets/ipso-f7843bf2cd.png"
+            alt="{{post.title}}" />
+    </figure>
+
+    <div>
+        <h4>{{ post.title }}</h4>
+        <p innerHtml="{{post.body}}">
+        </p>
+        <footer>
+            <span class="edit" *ngIf="isAdmin()">
+                <i class="material-icons" (click)="edit();">edit</i>
+                <i class="material-icons" (click)="delete();">delete</i>
+            </span>
+            <span class="info">
+                {{ post.publishDate | date: 'EEEE, MMM d, y' }} - {{ post.readMinutes }} min read
+                <i class="material-icons">access_time</i>
+            </span>
+        </footer>
+    </div>
+</div>

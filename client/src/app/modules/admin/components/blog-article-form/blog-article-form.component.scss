@@ -1,0 +1,24 @@
+.button-bar {
+	padding-top: 20px;
+	display: flex;
+	justify-content: flex-end;
+
+	mat-spinner {
+		margin-top: 8px;
+		margin-right: 10px;
+	}
+}
+
+app-image-editor {
+	display: block;
+	margin-bottom: 25px;
+}
+
+div.preview div.ql-editor {
+	padding: 0px;
+}
+
+h2 {
+	margin-top: 50px;
+	margin-bottom: 25px;
+}

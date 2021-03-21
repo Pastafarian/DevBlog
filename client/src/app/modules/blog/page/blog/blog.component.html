@@ -1,0 +1,24 @@
+<div *ngIf="vm$ | async as vm">
+    <h3>Blog Articles</h3>
+
+    <div *ngIf="vm.isAuthenticated" class="admin-options">
+        <mat-radio-group (change)="postFilterChange($event)" aria-label="Select an option">
+            <mat-radio-button checked="true" value="All">All</mat-radio-button>
+            <mat-radio-button value="Live">Live</mat-radio-button>
+            <mat-radio-button value="Scheduled">Scheduled</mat-radio-button>
+            <mat-radio-button value="Unpublished">Unpublished</mat-radio-button>
+        </mat-radio-group>
+
+        <button mat-button matListIcon routerLink="/admin/blog/add/">
+            <mat-icon>add_circle_outline</mat-icon>
+            Add Article
+        </button>
+    </div>
+
+    <div class="card-row">
+        <ng-container *ngFor="let post of vm.posts">
+            <app-blog-listing-item class="card box-shadow" [post]="post">
+            </app-blog-listing-item>
+        </ng-container>
+    </div>
+</div>

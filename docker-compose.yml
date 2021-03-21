@@ -1,0 +1,52 @@
+version: "3"
+
+services:
+  database:
+    image: postgres
+    restart: unless-stopped
+    env_file:
+      - database.env
+    ports:
+      - "5439:5432"
+    volumes:
+      - database-data:/var/lib/postgresql/data/
+    networks: 
+      - network  
+  api:
+    build:
+      context: server
+      dockerfile: Dockerfile
+    ports:
+      - 6578:8800
+    networks: 
+      - network
+  web:
+    restart: unless-stopped
+    build:
+     context: client
+     dockerfile: Dockerfile
+    volumes:
+      - ./client:/app
+      - node-modules:/app/node_modules
+      - ./data/nginx:/etc/nginx/conf.d
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
+    ports:
+      - '80:80'
+      - "443:443"
+    networks: 
+      - network
+    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+  certbot:
+    image: certbot/certbot
+    restart: unless-stopped
+    volumes: 
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+volumes:
+  database-data:
+  node-modules:
+networks:
+  network:
+     driver: bridge

@@ -1,0 +1,58 @@
+div.close {
+	display: flex;
+	margin-top: -10px;
+	margin-bottom: 10px;
+	justify-content: flex-end;
+
+	div.close-box {
+		width: 32px;
+		height: 32px;
+		border-radius: 50%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		cursor: pointer;
+		transition: background-color 150ms linear;
+	}
+
+	div.close-box:hover {
+		background-color: #f3f3f3;
+		transition: background-color 150ms linear;
+	}
+}
+
+div.dropzone {
+	padding: 10px;
+	border: dotted 2px #aaa;
+	cursor: pointer;
+	border-radius: 5px;
+	min-height: 200px;
+	min-width: 30px;
+	&.file-drag-over {
+		border-color: #f44336;
+		border-style: solid;
+	}
+}
+
+input[type="file"] {
+	display: none;
+}
+
+div.dropzone div.icon {
+	display: flex;
+	justify-content: space-between;
+}
+
+div.buttons {
+	display: flex;
+	margin-top: 25px;
+	justify-content: space-between;
+}
+
+h3 {
+	color: #000000;
+	text-transform: uppercase;
+	text-align: center;
+	font-size: 30px;
+	font-family: "Dosis", Arial, Helvetica, sans-serif;
+}

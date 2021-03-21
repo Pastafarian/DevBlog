@@ -1,0 +1,17 @@
+@use "~@angular/material/theming" as t;
+
+div.admin-options {
+	background-color: #ffffff;
+	height: 40px;
+	margin-bottom: 20px;
+	padding: 10px;
+	@include t.mat-elevation(6);
+}
+
+.mat-radio-button ~ .mat-radio-button {
+	margin-left: 16px;
+}
+
+.mat-icon {
+    color: black;
+}

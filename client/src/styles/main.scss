@@ -1,0 +1,18 @@
+@use "theme/custom";
+@use "abstracts/variables";
+@use "abstracts/functions";
+@use "abstracts/mixins";
+@use "abstracts/placeholders";
+@use "base/base";
+@use "base/reset";
+@use "base/typography";
+@use "components/cards";
+@use "layout/header";
+@use "layout/sidenav";
+@use "layout/body";
+@use "vendors/highlight.js.scss";
+@use "shame";
+
+// Based on:
+// https://medium.com/@aaronverones/using-the-7-1-sass-scss-pattern-with-angular-7-bb210c015dcc
+// https://medium.com/@aleixsuau/how-to-use-angular-material-2-sass-variables-in-your-components-76ce0203f126

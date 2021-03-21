@@ -1,0 +1,21 @@
+div {
+	margin-top: auto;
+}
+
+div:focus {
+	outline: 0;
+}
+
+:host {
+	display: flex;
+	flex-direction: column;
+}
+
+figure,
+i {
+	cursor: pointer;
+}
+
+figure:focus {
+	outline: 0;
+}

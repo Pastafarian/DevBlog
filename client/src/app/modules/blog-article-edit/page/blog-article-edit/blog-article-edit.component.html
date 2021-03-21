@@ -1,0 +1,6 @@
+<h3>
+    Edit Blog Post - <span *ngIf="post">{{ post.title }}</span>
+</h3>
+<app-blog-article-form *ngIf="post" (formSaved)="formSaved($event)" formMode="Edit" [post]="post">
+
+</app-blog-article-form>

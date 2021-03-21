@@ -1,0 +1,13 @@
+<div class="bread-crumb-nav">
+	<div class="breadcrumb">
+		<ng-container *ngFor="let crumb of breadcrumbs$ | async; last as isLast; trackBy: trackBreadcrumb">
+			<a *ngIf="!crumb.last" [routerLink]="crumb.link">
+				<span>{{ crumb.name }}</span>
+			</a>
+			<a *ngIf="crumb.last">
+				<span>{{ crumb.name }}</span>
+			</a>
+			<div *ngIf="!crumb.last" class="spacer">&gt;</div>
+		</ng-container>
+	</div>
+</div>

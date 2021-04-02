@@ -26,11 +26,12 @@ services:
      context: client
      dockerfile: Dockerfile
     volumes:
-      - ./client:/app
+      - ./client:/app # maps the host Client directory to the /app container directory (Host volume) 
       - node-modules:/app/node_modules
       - ./data/nginx:/etc/nginx/conf.d
       - ./data/certbot/conf:/etc/letsencrypt
       - ./data/certbot/www:/var/www/certbot
+      # https://stackoverflow.com/questions/46166304/docker-compose-volumes-without-colon
     ports:
       - '80:80'
       - "443:443"

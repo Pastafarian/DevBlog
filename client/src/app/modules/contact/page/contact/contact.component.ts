@@ -6,11 +6,13 @@ import { Store } from '@ngxs/store';
 import { SetBreadCrumb } from '@store/breadcrumb/breadcrumb.actions';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 interface Vm {
   form: FormGroup;
 }
 
+@UntilDestroy()
 @Component({
   selector: 'app-contact',
   templateUrl: './contact.component.html',
@@ -71,7 +73,8 @@ export class ContactComponent implements OnInit {
             message: ['', [Validators.required, Validators.maxLength(200), Validators.minLength(10)]]
           })
         };
-      })
+      }),
+      untilDestroyed(this)
     );
   }
 

@@ -4,7 +4,9 @@ import { Post } from '@data/schema/post';
 import { FormMode } from '@data/schema/form-mode';
 import { QuillEditorComponent, ContentChange } from 'ngx-quill';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
+@UntilDestroy()
 @Component({
 	selector: 'app-blog-article-form',
 	templateUrl: './blog-article-form.component.html',
@@ -45,11 +47,10 @@ export class BlogArticleFormComponent implements OnInit {
 				.onContentChanged
 				.pipe(
 					debounceTime(400),
-					distinctUntilChanged()
+					distinctUntilChanged(),
+					untilDestroyed(this)
 				)
-				.subscribe((data: ContentChange) => {
-					// tslint:disable-next-line:no-console
-					console.log('view child + directly subscription', data);
+				.subscribe((_: ContentChange) => {
 				});
 		});
 	}
@@ -64,13 +65,6 @@ export class BlogArticleFormComponent implements OnInit {
 			publishDate: [((this.post && this.post.publishDate) || '') && this.post.publishDate, [Validators.required]],
 			headerImage: []
 		});
-
-		// Set form values dynamically
-		if (this.post) {
-			for (const [key, value] of Object.entries(this.post)) {
-				// console.log(key + ':' + value);
-			}
-		}
 
 		this.preview = ((this.post && this.post.body) || '') && this.post.body;
 

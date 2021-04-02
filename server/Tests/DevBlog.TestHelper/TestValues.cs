@@ -5,6 +5,8 @@ namespace DevBlog.TestHelper
 {
 	public static class TestValues
 	{
+        public const string TestDbConnectionString = "Host=localhost;Port=5432;Username=a;Password=a;Database=DevBlogTestDb";
+
 		public static string UniqueEmail()
 		{
 			return (UniqueString(5) + "@" + UniqueString(5) + ".com").ToLower();

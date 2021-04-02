@@ -6,12 +6,14 @@ import { AuthService } from '@core/services/auth.service';
 import { Observable } from 'rxjs';
 import { PostState, PostStateModel } from '@store/post/post.state';
 import { map } from 'rxjs/operators';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 interface HomeVm {
   posts: Post[];
-  isAuthenticated: boolean;
+  isAdmin: boolean;
 }
 
+@UntilDestroy()
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -30,9 +32,10 @@ export class HomeComponent implements OnInit {
       map(x => {
         return {
           posts: x.posts,
-          isAuthenticated: this.authService.isAuthenticated()
+          isAdmin: this.authService.isAdmin()
         };
       }),
+      untilDestroyed(this)
     );
   }
 }

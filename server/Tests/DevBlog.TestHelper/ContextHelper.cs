@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using DevBlog.Domain;
 using DevBlog.Domain.Entities;
@@ -27,11 +26,7 @@ namespace DevBlog.TestHelper
 		{
 			Context = null;
 			var optionsBuilder = new DbContextOptionsBuilder<Context>();
-			var connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING");
-
-			if (string.IsNullOrEmpty(connectionString)) throw new Exception("Connection string null or empty.");
-
-			optionsBuilder.UseNpgsql(connectionString);
+            optionsBuilder.UseNpgsql(TestValues.TestDbConnectionString);
 			return new ContextHelper(new Context(optionsBuilder.Options));
 		}
 

@@ -7,12 +7,14 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { PostState } from '@store/post/post.state';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { MatRadioChange } from '@angular/material/radio';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 interface BlogVm {
   posts: Post[];
-  isAuthenticated: boolean;
+  isAdmin: boolean;
 }
 
+@UntilDestroy()
 @Component({
   selector: 'app-blog',
   templateUrl: './blog.component.html',
@@ -46,9 +48,10 @@ export class BlogComponent implements OnInit {
       map(posts => {
         return {
           posts: posts,
-          isAuthenticated: this.authService.isAuthenticated()
+          isAdmin: this.authService.isAdmin()
         };
-      }));
+      }),
+      untilDestroyed(this));
   }
 
   postFilterChange(event: MatRadioChange) {

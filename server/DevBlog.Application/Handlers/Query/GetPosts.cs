@@ -60,7 +60,7 @@ namespace DevBlog.Application.Handlers.Query
 
 				postSummaries.ForEach(x =>
 				{
-					x.Body = x.Body.HtmlToPlainText().TruncateText(200);
+					x.Body = x.Body.HtmlToPlainText().TruncateText(220);
 				});
 				
 				return ApiResponse<List<PostDto>>.Ok(postSummaries);

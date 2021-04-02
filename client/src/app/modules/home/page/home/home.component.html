@@ -10,7 +10,8 @@
         </h2>
 
         <div class="button-container">
-            <a href="https://github.com" color="primary" mat-button>Get the blog source code here!</a>
+            <a href="https://github.com/Pastafarian/DevBlog" color="primary" mat-button>Get the blog source code
+                here!</a>
         </div>
     </div>
     <blockquote>
@@ -33,8 +34,8 @@
     </div>
 
     <div class="button-bar">
-        <a class="add-article" routerLink="admin/blog/add/" *ngIf="vm.isAuthenticated">
-            <mat-icon *ngIf="vm.isAuthenticated" matListIcon routerLink="admin/blog/add/">add_circle_outline</mat-icon>
+        <a class="add-article" routerLink="admin/blog/add/" *ngIf="vm.isAdmin">
+            <mat-icon *ngIf="vm.isAdmin" matListIcon routerLink="admin/blog/add/">add_circle_outline</mat-icon>
             Add Article
         </a>
 
@@ -80,15 +81,15 @@
                 <ul class="status">
                     <li>
                         <a href="https://github.com/Pastafarian?tab=repositories">
-                            <strong>6</strong>Repos</a>
+                            <strong>24</strong>Repos</a>
                     </li>
                     <li>
                         <a href="https://gist.github.com/Pastafarian">
-                            <strong>0</strong>Gists</a>
+                            <strong>5</strong>Gists</a>
                     </li>
                     <li>
                         <a href="https://github.com/Pastafarian?tab=following">
-                            <strong>6</strong>Following</a>
+                            <strong>46</strong>Following</a>
                     </li>
                 </ul>
                 <div class="footer">.NET, C#, Developer, Web</div>

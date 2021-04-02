@@ -1,7 +1,7 @@
 <div *ngIf="vm$ | async as vm">
     <h3>Blog Articles</h3>
 
-    <div *ngIf="vm.isAuthenticated" class="admin-options">
+    <div *ngIf="vm.isAdmin" class="admin-options">
         <mat-radio-group (change)="postFilterChange($event)" aria-label="Select an option">
             <mat-radio-button checked="true" value="All">All</mat-radio-button>
             <mat-radio-button value="Live">Live</mat-radio-button>

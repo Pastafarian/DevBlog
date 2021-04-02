@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { SetBreadCrumb } from '@app/store/breadcrumb/breadcrumb.actions';
+import { Store } from '@ngxs/store';
 
 @Component({
   selector: 'app-hire-me',
@@ -7,9 +9,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HireMeComponent implements OnInit {
 
-  constructor() { }
+  constructor(private store: Store) { }
 
   ngOnInit(): void {
+
+    this.store.dispatch(
+      new SetBreadCrumb({
+        breadCrumbs: [
+          { name: 'Home', link: '/' },
+          { name: 'Hire Me', last: true },
+        ]
+      })
+    );
   }
 
 }

@@ -59,9 +59,9 @@ namespace DevBlog.Domain.Migrations
                 columns: new[] { "Id", "Body", "HeaderImage", "PublishDate", "ReadMinutes", "Slug", "Title" },
                 values: new object[,]
                 {
-                    { 1, "Hello world", "angular-card2.png", new DateTime(2021, 3, 5, 15, 27, 45, 259, DateTimeKind.Utc).AddTicks(3976), 8, "angular", "Angular" },
-                    { 2, "Hello world", "dotnet-card2.png", new DateTime(2021, 3, 5, 15, 27, 45, 259, DateTimeKind.Utc).AddTicks(5122), 6, "core", ".NET Core" },
-                    { 3, "Hello world", "code-card3.png", new DateTime(2021, 3, 5, 15, 27, 45, 259, DateTimeKind.Utc).AddTicks(5149), 9, "git", "Git Hub" }
+                    { 1, "Hello world", "angular-card2.png", new DateTime(2021, 3, 31, 15, 34, 27, 461, DateTimeKind.Utc).AddTicks(9050), 8, "angular", "Angular" },
+                    { 2, "Hello world", "dotnet-card2.png", new DateTime(2021, 3, 31, 15, 34, 27, 461, DateTimeKind.Utc).AddTicks(9952), 6, "core", ".NET Core" },
+                    { 3, "Hello world", "code-card3.png", new DateTime(2021, 3, 31, 15, 34, 27, 461, DateTimeKind.Utc).AddTicks(9968), 9, "git", "Git Hub" }
                 });
         }
 

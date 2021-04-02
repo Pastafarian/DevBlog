@@ -13,7 +13,7 @@ services:
     networks:
       - network
   api:
-    image: stephenadam/stephenadamio_api:latest
+    image: stephenadam/devblog_api:latest
     ports:
       - 6578:8800
     expose:

@@ -29,7 +29,12 @@
 		font-style: italic;
 	}
 
+	
 	blockquote {
+		color: #fff;
+		float: right;
+		width: 30%;
+		margin-top: 25px;
 		font-size: 30px;
 		flex: 1 0 290px;
 		-webkit-margin-before: 0;

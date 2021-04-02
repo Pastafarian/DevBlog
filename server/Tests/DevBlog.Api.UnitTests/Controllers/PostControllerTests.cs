@@ -10,6 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using DevBlog.Application.Handlers.Command;
 using DevBlog.Application.Handlers.Query;
+using DevBlog.Application.Requests;
 using Xunit;
 
 namespace DevBlog.Api.UnitTests.Controllers
@@ -73,19 +74,19 @@ namespace DevBlog.Api.UnitTests.Controllers
 		{
 			// Arrange
 			const int postId = 23;
-			var createPostDto = new CreatePostDto
+			var createPostDto = new CreatePostRequest
 			{
 				Title = "test title"
 			};
 
-			mockMediator.Setup(m => m.Send(It.Is<CreatePost.Command>(c => c.Post == createPostDto), CancellationToken.None))
+			mockMediator.Setup(m => m.Send(It.Is<CreatePost.Command>(c => c.Request == createPostDto), CancellationToken.None))
 				.ReturnsAsync(ApiResponse<PostDto>.Ok(new PostDto{Id = postId }));
 
 			// Act
 			var result = (OkObjectResult)(await sut.CreatePost(createPostDto)).Result;
 
 			// Assert
-			mockMediator.Verify(x => x.Send(It.Is<CreatePost.Command>(y => y.Post.Title == createPostDto.Title), CancellationToken.None));
+			mockMediator.Verify(x => x.Send(It.Is<CreatePost.Command>(y => y.Request.Title == createPostDto.Title), CancellationToken.None));
 			Assert.IsType<PostDto>(result.Value);
 		}
 

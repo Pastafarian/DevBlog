@@ -4,6 +4,7 @@ using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using DevBlog.Application.Dtos;
+using DevBlog.Application.Requests;
 using DevBlog.Application.Response;
 using DevBlog.Application.Services;
 using DevBlog.Domain;
@@ -15,11 +16,11 @@ namespace DevBlog.Application.Handlers.Command
 	{
 		public class Command : IRequest<ApiResponse<PostDto>>
 		{
-			public CreatePostDto Post { get; }
+			public CreatePostRequest Request { get; }
 
-			public Command(CreatePostDto post)
+			public Command(CreatePostRequest request)
 			{
-				Post = post;
+				Request = request;
 			}
 		}
 
@@ -38,12 +39,12 @@ namespace DevBlog.Application.Handlers.Command
 
 			public async Task<ApiResponse<PostDto>> Handle(Command command, CancellationToken cancellationToken)
 			{
-				var post = mapper.Map<CreatePostDto, Post>(command.Post);
+                if (await context.Posts.AnyAsync(x => x.Slug == command.Request.Slug, cancellationToken)) return ApiResponse<PostDto>.BadRequest("A post with that slug already exists");
 
-				if (await context.Posts.AnyAsync(x => x.Slug == command.Post.Slug, cancellationToken)) return ApiResponse<PostDto>.BadRequest("A post with that slug already exists");
+                var post = mapper.Map<CreatePostRequest, Post>(command.Request);
 
-				if (!string.IsNullOrWhiteSpace(command.Post.HeaderImage))
-					post.HeaderImage = await imageStorageService.StoreImage(command.Post.HeaderImage, command.Post.Title, cancellationToken);
+				if (!string.IsNullOrWhiteSpace(command.Request.HeaderImage))
+					post.HeaderImage = await imageStorageService.StoreImage(command.Request.HeaderImage, command.Request.Title, cancellationToken);
 
 				await context.Posts.AddAsync(post, cancellationToken);
 

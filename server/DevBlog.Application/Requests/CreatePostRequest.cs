@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace DevBlog.Application.Dtos
+namespace DevBlog.Application.Requests
 {
-	public class CreatePostDto
+	public class CreatePostRequest
 	{
 		public string Title { get; set; }
 		public string Body { get; set; }
@@ -10,8 +10,8 @@ namespace DevBlog.Application.Dtos
 
 		public string Slug
 		{
-			get => slug.ToLower();
-			set => slug = value.ToLower();
+			get => slug.ToLower().Replace(" ", "_");
+			set => slug = value;
 		}
 		
 		private string slug;

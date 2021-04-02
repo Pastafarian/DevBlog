@@ -28,8 +28,7 @@ namespace DevBlog.Domain
 					Title = "Angular",
 					Slug = "angular",
 					Body = "Hello world",
-					Content = "Test 1",
-					PublishDate = DateTime.UtcNow,
+                    PublishDate = DateTime.UtcNow,
 					HeaderImage = "angular-card2.png"
 				},
 				new
@@ -39,8 +38,7 @@ namespace DevBlog.Domain
 					Title = ".NET Core",
 					Slug = "core",
 					Body = "Hello world",
-					Content = "Test 2",
-					PublishDate = DateTime.UtcNow,
+                    PublishDate = DateTime.UtcNow,
 					HeaderImage = "dotnet-card2.png"
 				},
 				new
@@ -50,8 +48,7 @@ namespace DevBlog.Domain
 					Title = "Git Hub",
 					Slug = "git",
 					Body = "Hello world",
-					Content = "Test 2",
-					PublishDate = DateTime.UtcNow,
+                    PublishDate = DateTime.UtcNow,
 					HeaderImage = "code-card3.png"
 				});
 

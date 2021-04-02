@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using DevBlog.Application.Dtos;
 using DevBlog.Application.Handlers.Command;
 using DevBlog.Application.Handlers.Query;
+using DevBlog.Application.Requests;
 
 namespace DevBlog.Api.Controllers
 {
@@ -42,9 +43,9 @@ namespace DevBlog.Api.Controllers
 		}
 
 		[HttpPost]
-		public async Task<ActionResult<PostDto>> CreatePost([FromBody] CreatePostDto postDto)
+		public async Task<ActionResult<PostDto>> CreatePost([FromBody] CreatePostRequest postRequest)
 		{
-			var response = await mediator.Send(new CreatePost.Command(postDto), CancellationToken.None);
+			var response = await mediator.Send(new CreatePost.Command(postRequest), CancellationToken.None);
 			return ToActionResult(response);
 		}
 

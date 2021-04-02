@@ -49,7 +49,7 @@ namespace DevBlog.Api
 				x.MemoryBufferThreshold = int.MaxValue;
 			});
 
-			services.AddDbContext<Context>(options => options.UseNpgsql(Configuration.GetConnectionString("StephenAdamIo")));
+			services.AddDbContext<Context>(options => options.UseNpgsql(Configuration.GetConnectionString("DevBlog")));
 
 			services.AddSimpleInjector(container, options =>
 			{

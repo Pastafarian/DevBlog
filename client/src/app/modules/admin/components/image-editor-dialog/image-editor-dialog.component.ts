@@ -7,6 +7,7 @@ import {
 	imageMeetsConstraints, getFileFromHtmlInputEvent
 } from '@shared/utils/file.util';
 import { switchMap } from 'rxjs/operators';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 export interface ImageDialogOptions {
 	roundCropper: boolean;
@@ -15,6 +16,7 @@ export interface ImageDialogOptions {
 	minHeight: number;
 }
 
+@UntilDestroy()
 @Component({
 	selector: 'app-image-editor-dialog',
 	templateUrl: './image-editor-dialog.component.html',
@@ -53,17 +55,18 @@ export class ImageEditorDialogComponent {
 		}
 
 		readFileContent(file).pipe(
-			switchMap(base64String => loadImageFromBase64String(base64String)))
-			.subscribe(image => {
-				if (imageMeetsConstraints(image, { minHeight: this.imageDialogOptions.minHeight, minWidth: this.imageDialogOptions.minWidth })) {
-					this.imageBase64ChangedEvent = image.src;
-				} else {
-					let error = '';
-					if (this.imageDialogOptions.minHeight) error = ` Minimum height ${this.imageDialogOptions.minHeight}.`;
-					if (this.imageDialogOptions.minWidth) error += ` Minimum width ${this.imageDialogOptions.minWidth}.`;
-					this.showSnackBar(`Sorry, the image must meet the following requirements for this slot. ${error}`);
-				}
-			});
+			switchMap(base64String => loadImageFromBase64String(base64String)),
+			untilDestroyed(this)
+		).subscribe(image => {
+			if (imageMeetsConstraints(image, { minHeight: this.imageDialogOptions.minHeight, minWidth: this.imageDialogOptions.minWidth })) {
+				this.imageBase64ChangedEvent = image.src;
+			} else {
+				let error = '';
+				if (this.imageDialogOptions.minHeight) error = ` Minimum height ${this.imageDialogOptions.minHeight}.`;
+				if (this.imageDialogOptions.minWidth) error += ` Minimum width ${this.imageDialogOptions.minWidth}.`;
+				this.showSnackBar(`Sorry, the image must meet the following requirements for this slot. ${error}`);
+			}
+		});
 	}
 
 	imageCropped(event: ImageCroppedEvent) {

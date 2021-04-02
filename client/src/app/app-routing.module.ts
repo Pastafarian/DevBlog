@@ -1,12 +1,11 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
 
 export const routes: Routes = [
   {
     path: 'contact',
     loadChildren: async () => (await import('./modules/contact/contact.module')).ContactModule,
     pathMatch: 'full',
-    //canDeactivate: [CanFormDeactivateGuard], TODO:
     data: { state: 'contact' }
   },
   {
@@ -56,8 +55,11 @@ export const routes: Routes = [
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(routes)
+    RouterModule.forRoot(routes, {
+      preloadingStrategy: PreloadAllModules
+    })
   ],
-  exports: [RouterModule]
+  exports: [RouterModule],
+
 })
 export class AppRoutingModule { }

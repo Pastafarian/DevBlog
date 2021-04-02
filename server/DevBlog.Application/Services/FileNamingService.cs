@@ -1,6 +1,7 @@
 ﻿using DevBlog.Application.Extensions;
 using System;
 using System.IO;
+using System.Linq;
 
 namespace DevBlog.Application.Services
 {
@@ -14,7 +15,7 @@ namespace DevBlog.Application.Services
 
 			name = name.Replace(" ", "_");
 
-			foreach (var c in Path.GetInvalidFileNameChars())
+			foreach (var c in Path.GetInvalidFileNameChars().Append('#'))
 			{
 				name = name.Replace(c.ToString(), string.Empty);
 			}

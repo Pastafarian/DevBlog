@@ -1,4 +1,5 @@
-﻿using Google.Cloud.Storage.V1;
+﻿using System;
+using Google.Cloud.Storage.V1;
 using DevBlog.Application.Settings;
 using System.IO;
 using System.Threading;
@@ -27,8 +28,8 @@ namespace DevBlog.Application.Services
 
 		public async Task<Object> UploadFromStream(Stream stream, string fileName, string contentType, CancellationToken cancellationToken)
 		{
-			return await storageClient.UploadObjectAsync(appSettings.BucketName, fileName, contentType, stream, new UploadObjectOptions(), cancellationToken);
-		}
+            return await storageClient.UploadObjectAsync(appSettings.BucketName, fileName, contentType, stream, new UploadObjectOptions(), cancellationToken);
+        }
 	}
 }
 

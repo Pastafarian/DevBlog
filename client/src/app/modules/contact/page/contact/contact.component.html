@@ -3,7 +3,6 @@
 
     <form [formGroup]="vm.form" (ngSubmit)="save(vm.form)" novalidate class="contact-form">
 
-        <!--TODO: Remove full width or check it exists!-->
         <div [@swooshInOutAnimation]="afterSubmitState">
             <mat-form-field class="full-width"
                 [ngClass]="{'has-error': (vm.form.get('name')?.touched || vm.form.get('name')?.dirty) }">

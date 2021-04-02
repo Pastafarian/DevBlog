@@ -6,7 +6,10 @@ import { Store } from '@ngxs/store';
 import { SetBreadCrumb } from '@store/breadcrumb/breadcrumb.actions';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { GetPosts } from '@store/post/post.actions';
+import { switchMap, tap } from 'rxjs/operators';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
+@UntilDestroy()
 @Component({
   selector: 'app-blog-article-edit',
   templateUrl: './blog-article-edit.component.html',
@@ -25,10 +28,11 @@ export class BlogArticleEditComponent implements OnInit {
 
   ngOnInit() {
 
-    // TODO:
-    this.route.paramMap.subscribe(params =>
-      this.apiService.getBlogPost(params.get('slug') ?? '').subscribe(x => {
-        this.post = x;
+    this.route.paramMap.pipe(
+      switchMap(params => this.apiService.getBlogPost(params.get('slug') ?? '')),
+      tap(post => {
+        this.post = post;
+
         this.store.dispatch(
           new SetBreadCrumb({
             breadCrumbs: [
@@ -37,10 +41,10 @@ export class BlogArticleEditComponent implements OnInit {
               { name: this.post.title, link: this.post.slug },
               { name: 'Editing ' + this.post.title, last: true }
             ]
-          })
-        );
-      })
-    );
+          }));
+      }),
+      untilDestroyed(this)
+    ).subscribe();
   }
 
   formSaved(post: Post) {

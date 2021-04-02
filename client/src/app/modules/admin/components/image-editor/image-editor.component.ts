@@ -1,8 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { ImageEditorDialogComponent, ImageDialogOptions } from './../image-editor-dialog/image-editor-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
-import { DialogService } from '@core/services/dialog.service';
-import { DialogData } from '@shared/dialog/dialog-component';
+import { DialogService } from '@core/services/dialog-service';
 
 export interface ImageConfig {
 	imageUrl: string;
@@ -61,36 +60,14 @@ export class ImageEditorComponent {
 	}
 
 	deleteImage() {
-
-		const data: DialogData = {
+		this.dialogService.confirm({
 			title: 'Confirm Deletion',
 			message: 'Are you you want to delete this image?',
-		};
-
-		this.dialogService.confirm(data).subscribe(deleteConfirmed => {
+		}).subscribe(deleteConfirmed => {
 			if (deleteConfirmed) {
 				this.imageUrl = '';
 				this.imageDeleted.emit(true);
 			}
 		});
-
-		/*
-		const confirmOptions: ConfirmDialogOptions = {
-			title: 'Confirm Deletion',
-			content: 'Are you you want to delete this image?'
-		};
-
-		this.dialog.open(ConfirmDialogComponent, {
-			width: '800px',
-			position: {
-				top: '80px',
-			},
-			data: confirmOptions
-		}).afterClosed().subscribe((deleteConfirmed: boolean) => {
-			if (deleteConfirmed) {
-				this.imageUrl = '';
-				this.imageDeleted.emit(true);
-			}
-		});*/
 	}
 }

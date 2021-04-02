@@ -6,11 +6,13 @@ import { Store } from '@ngxs/store';
 import { SetBreadCrumb } from '@store/breadcrumb/breadcrumb.actions';
 import { Observable } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 interface Vm {
   post: Post;
 }
 
+@UntilDestroy()
 @Component({
   selector: 'app-blog-article',
   templateUrl: './blog-article.component.html',
@@ -45,7 +47,8 @@ export class BlogArticleComponent implements OnInit {
         return {
           post: post
         };
-      })
+      }),
+      untilDestroyed(this)
     );
   }
 }

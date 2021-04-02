@@ -16,7 +16,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "StephenAdam.io": {
+    "DevBlog": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "api/values",

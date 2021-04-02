@@ -3,8 +3,8 @@ import { routerTransition } from '@core/animations/router-transition';
 import { AuthService } from '@core/services/auth.service';
 import ImageResize from 'quill-image-resize-module';
 import Quill from 'quill';
+import { RouterOutlet } from '@angular/router';
 
-// TODO: Move to admin?
 Quill.register('modules/imageResize', ImageResize);
 
 @Component({
@@ -20,8 +20,7 @@ export class AppComponent {
 		this.auth.scheduleRenewal();
 	}
 
-	// TODO: Replace any
-	getState(outlet: any) {
+	getState(outlet: RouterOutlet) {
 		return outlet.activatedRouteData.state;
 	}
 }

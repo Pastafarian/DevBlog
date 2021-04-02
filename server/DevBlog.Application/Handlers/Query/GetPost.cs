@@ -10,7 +10,7 @@ using DevBlog.Domain.Entities;
 
 namespace DevBlog.Application.Handlers.Query
 {
-	public class GetPost : IRequest<ApiResponse<PostDto>>
+    public class GetPost : IRequest<ApiResponse<PostDto>>
 	{
 		public class Query : IRequest<ApiResponse<PostDto>>
 		{

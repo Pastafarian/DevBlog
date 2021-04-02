@@ -5,6 +5,7 @@ using SimpleInjector;
 using DevBlog.Api.Ioc;
 using DevBlog.Application.Settings;
 using DevBlog.Domain;
+using DevBlog.TestHelper;
 
 namespace DevBlog.Api.IntTests.Framework
 {
@@ -19,7 +20,7 @@ namespace DevBlog.Api.IntTests.Framework
             container.Register(new AppSettings(), new LoggerSettings());
 
             var optionsBuilder = new DbContextOptionsBuilder<Context>();
-            optionsBuilder.UseNpgsql(TestData.TestDbConnectionString);
+            optionsBuilder.UseNpgsql(TestValues.TestDbConnectionString);
             var context = new Context(optionsBuilder.Options);
             context.Database.EnsureCreated();
             container.Register(()=> context);

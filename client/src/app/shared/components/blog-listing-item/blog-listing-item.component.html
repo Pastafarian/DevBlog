@@ -4,10 +4,6 @@
             alt="{{post.title}}" />
         <img *ngIf="post.headerImage && post.headerImage.indexOf('http') > -1" src="{{post.headerImage}}"
             alt="{{post.title}}" />
-
-        <!-- TODO-->
-        <img *ngIf="!post.headerImage" src="https://www.thetimes.co.uk/d/assets/ipso-f7843bf2cd.png"
-            alt="{{post.title}}" />
     </figure>
 
     <div>
@@ -16,8 +12,8 @@
         </p>
         <footer>
             <span class="edit" *ngIf="isAdmin()">
-                <i class="material-icons" (click)="edit();">edit</i>
-                <i class="material-icons" (click)="delete();">delete</i>
+                <i class="material-icons" (click)="edit($event);">edit</i>
+                <i class="material-icons" (click)="delete($event);">delete</i>
             </span>
             <span class="info">
                 {{ post.publishDate | date: 'EEEE, MMM d, y' }} - {{ post.readMinutes }} min read

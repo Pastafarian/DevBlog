@@ -44,6 +44,7 @@ https://medium.com/@pentacent/nginx-and-lets-encrypt-with-docker-in-less-than-5-
 
 
 ## Acknowledgements
+* [EFCore](https://docs.microsoft.com/en-us/ef/core/)
 * [AutoMapper](https://automapper.org/)
 * [MediatR](https://github.com/jbogard/MediatR)
 * [Serilog](https://serilog.net/)
@@ -96,6 +97,8 @@ The username will appear when you connect to the VM via the SSH option in the we
 * SSH into the VM.
 * Install Docker on remote machine 
 
+
+```shell
 sudo apt-get update
 
 sudo apt-get install -y --no-install-recommends \
@@ -110,11 +113,13 @@ sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debi
 sudo apt-get update
 
 sudo apt-get install docker-ce docker-ce-cli containerd.io
+```
 
 ## Install docker compose
 
 sudo curl -L "https://github.com/docker/compose/releases/download/1.28.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 sudo chmod +x /usr/local/bin/docker-compose
+
 
 ## Copy the docker-compose file from the server-files folder
 Note: currently this is setup for my private docker repo. You'll need to build the api image, place it in your own docker hub repo and update the configuration.  
@@ -129,10 +134,12 @@ Note: run this first - sudo chown username /home/username/data/nginx
 
 
 ## Setup let's encrypt certificate
+```shell
 curl -L https://raw.githubusercontent.com/wmnnd/nginx-certbot/master/init-letsencrypt.sh > init-letsencrypt.sh
 chmod +x init-letsencrypt.sh
 sudo ./init-letsencrypt.sh
 Update the init-letsencrypt.sh file. Change the line 'init-letsencrypt.sh' domains=(example.org www.example.org) to domains=(yourdomain.com www.yourdomain.com)
+```
 
 ## Login to your docker account 
 sudo docker login

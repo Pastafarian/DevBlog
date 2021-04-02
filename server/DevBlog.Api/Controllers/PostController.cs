@@ -26,7 +26,7 @@ namespace DevBlog.Api.Controllers
 			return ToActionResult(response);
 		}
 
-		[Route("{slug}")]
+        [Route("{slug}")]
 		[HttpGet]
 		public async Task<ActionResult<PostDto>> GetPost(string slug)
 		{

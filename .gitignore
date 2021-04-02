@@ -3,7 +3,6 @@
 
 # Custom
 keys/
-account-key.json
 
 # User-specific files
 *.suo

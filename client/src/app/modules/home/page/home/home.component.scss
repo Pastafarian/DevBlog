@@ -179,6 +179,15 @@
 
 			div.header {
 				margin-bottom: 15px;
+				
+				a.user-name {
+					text-decoration: none;
+					color: #707070;
+					&:hover {
+						text-decoration: none;
+						color: #4183c4;
+					}
+				}
 
 				a {
 					color: #707070;

@@ -9,7 +9,7 @@ namespace DevBlog.Api.Controllers
 	public class BaseController : Controller
 	{
 		protected SiteUser SiteUser => LazySiteUser.Value;
-		private Lazy<SiteUser> LazySiteUser => new Lazy<SiteUser>(User.BuildSiteUser());
+		private Lazy<SiteUser> LazySiteUser => new(User.BuildSiteUser());
 
 		protected ActionResult<T> ToActionResult<T>(ApiResponse<T> apiResponse)
 		{

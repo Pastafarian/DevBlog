@@ -12,7 +12,7 @@ namespace DevBlog.Application.UnitTests.Extensions
 			const string testString = null;
 
 			// Act + Assert
-			Assert.Equal(testString.TruncateText(50), string.Empty);
+			Assert.Equal(string.Empty, testString.TruncateText(50));
 		}
 
 		[Fact]
@@ -22,7 +22,7 @@ namespace DevBlog.Application.UnitTests.Extensions
 			const string testString = "This string is less than 50 characters.";
 
 			// Act + Assert
-			Assert.Equal(testString.TruncateText(50), testString);
+			Assert.Equal(testString, testString.TruncateText(50));
 		}
 
 		[Fact]

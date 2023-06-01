@@ -1,4 +1,6 @@
 ﻿using System.IO;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace DevBlog.TestHelper
 {
@@ -14,5 +16,14 @@ namespace DevBlog.TestHelper
 
 			return ms;
 		}
-	}
+
+        public static JsonSerializerOptions SerializeOptions = new()
+        {
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            WriteIndented = true,
+            Converters ={
+                new JsonStringEnumConverter()
+            }
+        };
+    }
 }

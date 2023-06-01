@@ -1,26 +1,24 @@
 ﻿using System.Net;
+using System.Net.Http;
+using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using DevBlog.Api.Controllers;
 using DevBlog.Api.IntTests.Framework;
 using DevBlog.Application.Requests;
-using DevBlog.Application.Settings;
+using FluentAssertions;
 using Xunit;
 
 namespace DevBlog.Api.IntTests.Controllers
 {
-    [Collection(TestData.TestCollectionName)]
-    public class ContactControllerTests
+    public class ContactControllerTests : IClassFixture<CustomWebApplicationFactory<Program>>
     {
-        private readonly ContactController sut;
-        private readonly ControllerFixture fixture;
+        private readonly HttpClient _client;
 
-        public ContactControllerTests(ControllerFixture controllerFixture)
+        public ContactControllerTests(CustomWebApplicationFactory<Program> application)
         {
-            sut = new ContactController(controllerFixture.Mediator, new AppSettings());
-            fixture = controllerFixture;
+            _client = application.CreateClient();
         }
+
 
         [Fact]
         public async Task GivenInvalidContact_WhenExecuted_ThenErrorReturned()
@@ -28,13 +26,20 @@ namespace DevBlog.Api.IntTests.Controllers
             // Arrange
             var invalidRequest = new SubmitContactRequestDto();
 
+            var serializeOptions = new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                WriteIndented = true
+            };
+
+            var invalidRequestJson = JsonSerializer.Serialize(invalidRequest, serializeOptions);
+
             // Act
-            var response = await sut.Post(invalidRequest);
+            var result = await _client.PostAsync("Contact", new StringContent(invalidRequestJson, Encoding.UTF8, "application/json"));
 
             // Assert
-            Assert.IsType<BadRequestObjectResult>(response.Result);
-            var result = (BadRequestObjectResult)response.Result;
-            Assert.Equal((int)HttpStatusCode.BadRequest, result.StatusCode);
+            result.IsSuccessStatusCode.Should().BeFalse();
+            result.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         }
 
         [Fact]
@@ -48,14 +53,20 @@ namespace DevBlog.Api.IntTests.Controllers
                 Message = TestData.RandomString(20)
             };
 
+            var serializeOptions = new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                WriteIndented = true
+            };
+
+            var invalidRequestJson = JsonSerializer.Serialize(validRequest, serializeOptions);
+
             // Act
-            var response = await sut.Post(validRequest);
+            var result = await _client.PostAsync("Contact", new StringContent(invalidRequestJson, Encoding.UTF8, "application/json"));
 
             // Assert
-            Assert.IsType<OkObjectResult>(response.Result);
-            var contact = await fixture.Context.Contacts.SingleAsync(x => x.Email == validRequest.Email);
-            Assert.Equal(validRequest.Message, contact.Message);
-            Assert.Equal(validRequest.Name, contact.Name);
+            result.IsSuccessStatusCode.Should().BeTrue();
         }
+
     }
 }

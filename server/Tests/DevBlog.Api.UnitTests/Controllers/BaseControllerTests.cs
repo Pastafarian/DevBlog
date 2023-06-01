@@ -7,11 +7,11 @@ namespace DevBlog.Api.UnitTests.Controllers
 {
 	public class BaseControllerTests
 	{
-		private readonly TestController sut;
+		private readonly TestController _sut;
 
 		public BaseControllerTests()
 		{
-			sut = new TestController();
+			_sut = new TestController();
 		}
 
 		[Fact]
@@ -22,7 +22,7 @@ namespace DevBlog.Api.UnitTests.Controllers
 			var apiResult = ApiResponse<EntityCreatedResponseDto>.Conflict(errorMessage);
 
 			// Act
-			var result = sut.ToActionResult(apiResult).Result;
+			var result = _sut.ToActionResult(apiResult).Result;
 			var conflictResult = result as ConflictObjectResult;
 
 			// Assert
@@ -40,7 +40,7 @@ namespace DevBlog.Api.UnitTests.Controllers
 			var apiResult = ApiResponse.NotFound(errorMessage);
 
 			// Act
-			var result = sut.ToActionResult(apiResult).Result;
+			var result = _sut.ToActionResult(apiResult).Result;
 			var objectResult = result as NotFoundObjectResult;
 
 			// Assert
@@ -58,7 +58,7 @@ namespace DevBlog.Api.UnitTests.Controllers
 			var apiResult = ApiResponse.Unauthorized(errorMessage);
 
 			// Act
-			var result = sut.ToActionResult(apiResult).Result;
+			var result = _sut.ToActionResult(apiResult).Result;
 			var objectResult = result as UnauthorizedObjectResult;
 			
 			// Assert
@@ -76,7 +76,7 @@ namespace DevBlog.Api.UnitTests.Controllers
 			var apiResult = ApiResponse.BadRequest(errorMessage);
 
 			// Act
-			var result = sut.ToActionResult(apiResult).Result;
+			var result = _sut.ToActionResult(apiResult).Result;
 			var objectResult = result as BadRequestObjectResult;
 
 			// Assert

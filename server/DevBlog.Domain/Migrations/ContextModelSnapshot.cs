@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
+#nullable disable
+
 namespace DevBlog.Domain.Migrations
 {
     [DbContext(typeof(Context))]
@@ -15,16 +17,18 @@ namespace DevBlog.Domain.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .UseIdentityByDefaultColumns()
-                .HasAnnotation("Relational:MaxIdentifierLength", 63)
-                .HasAnnotation("ProductVersion", "5.0.1");
+                .HasAnnotation("ProductVersion", "6.0.7")
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
+
+            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("DevBlog.Domain.Entities.Contact", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .UseIdentityByDefaultColumn();
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Email")
                         .HasColumnType("text");
@@ -44,8 +48,9 @@ namespace DevBlog.Domain.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .UseIdentityByDefaultColumn();
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("FileName")
                         .HasColumnType("text");
@@ -59,8 +64,9 @@ namespace DevBlog.Domain.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .UseIdentityByDefaultColumn();
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Body")
                         .HasColumnType("text");
@@ -69,7 +75,7 @@ namespace DevBlog.Domain.Migrations
                         .HasColumnType("text");
 
                     b.Property<DateTime?>("PublishDate")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("ReadMinutes")
                         .HasColumnType("integer");
@@ -90,7 +96,7 @@ namespace DevBlog.Domain.Migrations
                             Id = 1,
                             Body = "Hello world",
                             HeaderImage = "angular-card2.png",
-                            PublishDate = new DateTime(2021, 3, 31, 15, 34, 27, 461, DateTimeKind.Utc).AddTicks(9050),
+                            PublishDate = new DateTime(2022, 7, 25, 18, 32, 56, 830, DateTimeKind.Utc).AddTicks(6335),
                             ReadMinutes = 8,
                             Slug = "angular",
                             Title = "Angular"
@@ -100,7 +106,7 @@ namespace DevBlog.Domain.Migrations
                             Id = 2,
                             Body = "Hello world",
                             HeaderImage = "dotnet-card2.png",
-                            PublishDate = new DateTime(2021, 3, 31, 15, 34, 27, 461, DateTimeKind.Utc).AddTicks(9952),
+                            PublishDate = new DateTime(2022, 7, 25, 18, 32, 56, 830, DateTimeKind.Utc).AddTicks(6336),
                             ReadMinutes = 6,
                             Slug = "core",
                             Title = ".NET Core"
@@ -110,7 +116,7 @@ namespace DevBlog.Domain.Migrations
                             Id = 3,
                             Body = "Hello world",
                             HeaderImage = "code-card3.png",
-                            PublishDate = new DateTime(2021, 3, 31, 15, 34, 27, 461, DateTimeKind.Utc).AddTicks(9968),
+                            PublishDate = new DateTime(2022, 7, 25, 18, 32, 56, 830, DateTimeKind.Utc).AddTicks(6337),
                             ReadMinutes = 9,
                             Slug = "git",
                             Title = "Git Hub"

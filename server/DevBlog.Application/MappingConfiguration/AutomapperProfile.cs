@@ -17,6 +17,8 @@ namespace DevBlog.Application.MappingConfiguration
 			CreateMap<PostDto, Post>()
 				.ForMember(x => x.ReadMinutes, y => y.MapFrom(z => z.Body.CalculateReadMinutes()));
 
+            CreateMap<UpdatePostRequestDto, Post>();
+
 			CreateMap<CreatePostDto, Post>()
 				.ForMember(x => x.Id, y => y.Ignore())
 				.ForMember(x => x.ReadMinutes, opt => opt.Ignore());

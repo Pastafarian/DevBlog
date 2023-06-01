@@ -1,6 +1,6 @@
-﻿using DevBlog.Application.Enums;
+﻿using System;
+using DevBlog.Application.Enums;
 using DevBlog.Application.Extensions;
-using DevBlog.Application.Settings;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -11,24 +11,30 @@ namespace DevBlog.Application.Services
 {
 	public class ImageStorageService : IImageStorageService
 	{
-		private readonly IImageService imageService;
-		private readonly IFileNamingService fileNamingService;
-		private readonly IFileService fileService;
-		private readonly AppSettings appSettings;
-
-		public ImageStorageService(IImageService imageService, IFileNamingService fileNamingService, IFileService fileService, AppSettings appSettings)
+		private readonly IImageService _imageService;
+		private readonly IFileNamingService _fileNamingService;
+		private readonly IFileSystemService _fileService;
+        
+		public ImageStorageService(IImageService imageService, IFileNamingService fileNamingService, IFileSystemService fileService)
 		{
-			this.imageService = imageService;
-			this.fileNamingService = fileNamingService;
-			this.fileService = fileService;
-			this.appSettings = appSettings;
-		}
+			_imageService = imageService;
+			_fileNamingService = fileNamingService;
+			_fileService = fileService;
+        }
 
 		public async Task<string> StoreImage(string base64String, string title, CancellationToken cancellationToken)
 		{
-			var bytes = imageService.LoadImage(base64String).ToByteArray(ImageFormat.Png);
-			return await SaveImageFile(bytes, title, ImageFormatInformation[ImageFormat.Png], cancellationToken);
-		}
+            try
+            {
+                var bytes = _imageService.LoadImage(base64String).ToByteArray(ImageFormat.Png);
+                return await SaveImageFile(bytes, title, ImageFormatInformation[ImageFormat.Png], cancellationToken);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
 
 		public Task<string> StoreImage(byte[] content, string fileName, CancellationToken cancellationToken)
 		{
@@ -37,9 +43,10 @@ namespace DevBlog.Application.Services
 
 		private async Task<string> SaveImageFile(byte[] content, string title, ImageFormatInfo imageFormat, CancellationToken cancellationToken)
 		{
-			var fileName = fileNamingService.GenerateFileName(title, imageFormat.Extension);
-			var response = await fileService.UploadFromByteArray(content, fileName, imageFormat.MimeType, cancellationToken);
-			return appSettings.StorageAccountUri + response.Bucket + "/" + response.Name;
+			var fileName = _fileNamingService.GenerateFileName(title, imageFormat.Extension);
+			var response = await _fileService.UploadFromByteArray(content, fileName, cancellationToken);
+		
+			return response;
 		}
 
 		private static ImageFormatInfo GetImageFormatInfoFromFileName(string fileName)

@@ -12,15 +12,15 @@ namespace DevBlog.Api.UnitTests.Controllers
 {
 	public class ImageControllerTests
 	{
-		private readonly Mock<IFormFile> mockFormFile;
-		private readonly Mock<IMediator> mockMediator;
-		private readonly ImageController sut;
+		private readonly Mock<IFormFile> _mockFormFile;
+		private readonly Mock<IMediator> _mockMediator;
+		private readonly ImageController _sut;
 
 		public ImageControllerTests()
 		{
-			mockMediator = new Mock<IMediator>();
-			mockFormFile = new Mock<IFormFile>();
-			sut = new ImageController(mockMediator.Object);
+			_mockMediator = new Mock<IMediator>();
+			_mockFormFile = new Mock<IFormFile>();
+			_sut = new ImageController(_mockMediator.Object);
 		}
 
 		[Fact]
@@ -28,19 +28,22 @@ namespace DevBlog.Api.UnitTests.Controllers
 		{
 			// Arrange
 			const string fileName = "foo.jpg";
-			mockFormFile.Setup(x => x.FileName).Returns(fileName);
-			mockFormFile.Setup(x => x.OpenReadStream()).Returns(TestHelpers.GetMemoryStream());
+			_mockFormFile.Setup(x => x.FileName).Returns(fileName);
+			_mockFormFile.Setup(x => x.OpenReadStream()).Returns(TestHelpers.GetMemoryStream());
 			
 			var imageUploadedResponse = new ImageUploadedResponseDto("http://domain/image.jpg");
 
-			mockMediator.Setup(m => m.Send(It.Is<UploadImage.Command>(c => c.FileName == fileName), default))
+			_mockMediator.Setup(m => m.Send(It.Is<UploadImage.Command>(c => c.FileName == fileName), default))
 				.ReturnsAsync(ApiResponse<ImageUploadedResponseDto>.Ok(imageUploadedResponse));
 
 			// Act
-			var result = (OkObjectResult)(await sut.Upload(mockFormFile.Object)).Result;
+			var result = (OkObjectResult)(await _sut.Upload(_mockFormFile.Object)).Result;
+            Assert.NotNull(result);
+
 			var response = result.Value as ImageUploadedResponseDto;
+			
 			// Assert
-			mockMediator.Verify(x => x.Send(It.Is<UploadImage.Command>(y => y.FileName == fileName), default));
+			_mockMediator.Verify(x => x.Send(It.Is<UploadImage.Command>(y => y.FileName == fileName), default));
 			Assert.IsType<ImageUploadedResponseDto>(result.Value);
 			Assert.Equal(imageUploadedResponse.ImageUrl, response?.ImageUrl);
 		}

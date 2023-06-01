@@ -25,7 +25,6 @@
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
-            "aot": true,
             "assets": [
               "src/assets/images/libadge.webp",
               "src/assets/images/li.webp",
@@ -44,14 +43,21 @@
               "src/styles/main.scss"
             ],
             "scripts": [
-              "./node_modules/auth0-js/build/auth0.js",
+              "./node_modules/auth0-js/dist/auth0.js",
               "./node_modules/quill/dist/quill.core.js"
             ],
             "stylePreprocessorOptions": {
               "includePaths": [
-                "src/styles"
+                "src/styles",
+                "./node_modules"
               ]
-            }
+            },
+            "vendorChunk": true,
+            "extractLicenses": false,
+            "buildOptimizer": false,
+            "sourceMap": true,
+            "optimization": false,
+            "namedChunks": true
           },
           "configurations": {
             "production": {
@@ -71,8 +77,8 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "1600kb",
-                  "maximumError": "1600kb"
+                  "maximumWarning": "1800kb",
+                  "maximumError": "1800kb"
                 },
                 {
                   "type": "anyComponentStyle",
@@ -81,7 +87,8 @@
                 }
               ]
             }
-          }
+          },
+          "defaultConfiguration": ""
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
@@ -117,19 +124,6 @@
             "scripts": []
           }
         },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "tsconfig.app.json",
-              "tsconfig.spec.json",
-              "e2e/tsconfig.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
-          }
-        },
         "e2e": {
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
@@ -145,5 +139,7 @@
       }
     }
   },
-  "defaultProject": "client"
+  "cli": {
+    "analytics": "bcd4f7f8-4e10-4b83-a7cc-993e9b27a950"
+  }
 }

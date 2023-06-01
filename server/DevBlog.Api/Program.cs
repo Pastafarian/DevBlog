@@ -1,45 +1,39 @@
-﻿using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
+﻿using DevBlog.Api.Helpers;
+using Microsoft.AspNetCore.Builder;
 using Serilog;
-using DevBlog.Api.Helpers;
-using DevBlog.Application.Logging;
 using System;
+using DevBlog.Api.Ioc;
 
-namespace DevBlog.Api
+var configuration = ConfigurationHelper.Build();
+var logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(configuration)
+    .CreateLogger();
+
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.Register(builder.Configuration);
+
+var app = builder.Build();
+
+app.ConfigureMiddleware(builder);
+
+
+try
 {
-	public class Program
-	{
-		public static int Main(string[] args)
-        {
-            var (appSettings, loggerSettings) = ConfigurationHelper.GetSettings();
-
-            Log.Logger = SerilogBuilder.Build<Program>(appSettings, loggerSettings);
-
-			try
-			{
-				Log.Information("Starting web host");
-				CreateHostBuilder(args).Build().Run();
-				return 0;
-			}
-			catch (Exception ex)
-			{
-				Log.Information("Exception Here");
-				Log.Fatal(ex, "Host terminated unexpectedly");
-				return 1;
-			}
-			finally
-			{
-				Log.CloseAndFlush();
-			}
-		}
-
-		private static IHostBuilder CreateHostBuilder(string[] args) =>
-			Host.CreateDefaultBuilder(args)
-				
-				.ConfigureWebHostDefaults(webBuilder =>
-				{
-					webBuilder.UseStartup<Startup>();
-
-				}).UseSerilog();
-	}
+    logger.Information("Starting web host");
+    Log.Information("Starting web host from another logger");
+    app.Run();
+    return 0;
 }
+catch (Exception ex)
+{
+    Log.Information("Exception Here");
+    Log.Fatal(ex, "Host terminated unexpectedly");
+    return 1;
+}
+finally
+{
+    Log.CloseAndFlush();
+}
+
+public partial class Program { }

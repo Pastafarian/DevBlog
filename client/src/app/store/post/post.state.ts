@@ -11,7 +11,6 @@ export interface PostStateModel extends TrackedState {
 	posts: Post[];
 }
 
-@Injectable()
 @State<PostStateModel>({
 	name: 'post',
 	defaults: {
@@ -19,6 +18,7 @@ export interface PostStateModel extends TrackedState {
 		lastFetched: 0
 	}
 })
+@Injectable()
 export class PostState {
 
 	constructor(private apiService: ApiService) {

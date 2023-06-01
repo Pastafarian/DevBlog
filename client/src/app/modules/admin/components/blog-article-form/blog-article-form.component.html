@@ -1,12 +1,11 @@
-<mat-card class="article">
+<mat-card appearance="outlined" class="article">
 	<form [formGroup]="form" (ngSubmit)="save()" novalidate>
 
 		<app-image-editor (imageDeleted)="imageDeleted()" (imageSaved)="imageSaved($event)"
 			[imageUrl]="post?.headerImage">
 		</app-image-editor>
 
-		<mat-form-field class="full-width"
-			[ngClass]="{ 'has-error': form.get('title')?.touched || form.get('title')?.dirty }">
+		<mat-form-field [ngClass]="{ 'has-error': form.get('title')?.touched || form.get('title')?.dirty }">
 			<input matInput formControlName="title" placeholder="Title (required)" maxlength="70" />
 			<mat-error *ngIf="form.get('title')?.hasError('required')" align="end">
 				Please enter a title
@@ -17,8 +16,7 @@
 			<mat-hint align="end">{{ form.get('title')?.value.length }} / 25</mat-hint>
 		</mat-form-field>
 
-		<mat-form-field class="full-width"
-			[ngClass]="{ 'has-error': form.get('slug')?.touched || form.get('slug')?.dirty }">
+		<mat-form-field [ngClass]="{ 'has-error': form.get('slug')?.touched || form.get('slug')?.dirty }">
 			<input matInput formControlName="slug" placeholder="Slug (required)" maxlength="70" />
 			<mat-error *ngIf="form.get('slug')?.hasError('required')" align="end">Please enter a slug</mat-error>
 			<mat-error *ngIf="form.get('slug')?.hasError('minlength')" align="end">
@@ -27,8 +25,7 @@
 			<mat-hint align="end">{{ form.get('slug')?.value.length }} / 25</mat-hint>
 		</mat-form-field>
 
-		<mat-form-field class="full-width"
-			[ngClass]="{ 'has-error': form.get('publishDate')?.touched || form.get('publishDate')?.dirty }">
+		<mat-form-field [ngClass]="{ 'has-error': form.get('publishDate')?.touched || form.get('publishDate')?.dirty }">
 			<input matInput [matDatepicker]="datePicker" formControlName="publishDate"
 				placeholder="Publish Date (required)" />
 			<mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>

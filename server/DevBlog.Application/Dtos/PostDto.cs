@@ -12,5 +12,5 @@ namespace DevBlog.Application.Dtos
 		public DateTime? PublishDate { get; set; }
 		public int ReadMinutes { get; set; }
 		public bool IsPublished { get; set; }
-	}
+    }
 }

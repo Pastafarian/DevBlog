@@ -3,22 +3,22 @@ using Moq;
 using DevBlog.Application.Dtos;
 using DevBlog.Application.Handlers.Query;
 using DevBlog.Domain.Entities;
-using DevBlog.TestHelper;
 using Xunit;
 
 namespace DevBlog.Application.IntTests.Handlers.Query
 {
-	public class GetPostTests
+	public class GetPostTests : IClassFixture<ContextBuilder>
 	{
-		private readonly ContextHelper th;
-		private readonly GetPost.Handler sut;
-		private readonly Mock<IMapper> mapper;
+		private readonly ContextBuilder _contextBuilder;
+		private readonly GetPost.Handler _sut;
+		private readonly Mock<IMapper> _mapper;
 
-		public GetPostTests()
-		{
-			th = new ContextHelper().BuildInMemoryHelper();
-			mapper = new Mock<IMapper>();
-			sut = new GetPost.Handler(th.Context, mapper.Object);
+		public GetPostTests(ContextBuilder contextBuilder)
+        {
+            contextBuilder.Build();
+            _contextBuilder = contextBuilder;
+			_mapper = new Mock<IMapper>();
+			_sut = new GetPost.Handler(contextBuilder.Context, _mapper.Object);
 		}
 
 		[Fact]
@@ -28,7 +28,7 @@ namespace DevBlog.Application.IntTests.Handlers.Query
 			var query = new GetPost.Query("unknown-slug");
 
 			// Act
-			var result = await sut.Handle(query, default);
+			var result = await _sut.Handle(query, default);
 
 			// Assert
 			Assert.True(result.IsNotFound);
@@ -39,13 +39,17 @@ namespace DevBlog.Application.IntTests.Handlers.Query
 		{
 			// Arrange
 			const string slug = "A-POST-SLUG";
-			await th.CreatePost(new Post { Slug = slug });
+
+			var post = new Post { Slug = slug };
+            await _contextBuilder.Context.Posts.AddAsync(post);
+            await _contextBuilder.Context.SaveChangesAsync();
+
 			var query = new GetPost.Query(slug.ToLower());
 			var postDto = new PostDto();
-			mapper.Setup(x => x.Map<Post, PostDto>(It.IsAny<Post>())).Returns(postDto);
+			_mapper.Setup(x => x.Map<Post, PostDto>(It.IsAny<Post>())).Returns(postDto);
 
 			// Act
-			var result = await sut.Handle(query, default);
+			var result = await _sut.Handle(query, default);
 
 			// Assert
 			Assert.Equal(postDto, result.Value);

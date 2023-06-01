@@ -20,15 +20,14 @@ interface HomeVm {
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-
-  @Select(PostState) postState$: Observable<PostStateModel>;
   vm$: Observable<HomeVm>;
 
   constructor(private store: Store, private authService: AuthService) { }
 
   ngOnInit() {
     this.store.dispatch(new SetBreadCrumb({ breadCrumbs: [] }));
-    this.vm$ = this.postState$.pipe(
+
+    this.vm$ = this.store.select<PostStateModel>(PostState).pipe(
       map(x => {
         return {
           posts: x.posts,

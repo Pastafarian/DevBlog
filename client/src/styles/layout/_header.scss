@@ -1,4 +1,6 @@
-@use "~@angular/material/theming" as t;
+@use "@angular/material/theming" as t;
+//@use '@angular/material' as t;
+// @use "~@angular/material/theming" as t;
 
 header.app-header {
 	font-family: Impact, Haettenschweiler, "Franklin Gothic Bold", Charcoal, "Helvetica Inserat",
@@ -9,7 +11,7 @@ header.app-header {
 
 	@include t.mat-elevation(6);
 
-	> * {
+	>* {
 		display: flex;
 		align-items: flex-end;
 		padding-bottom: 7px;
@@ -78,6 +80,7 @@ header.app-header {
 		nav {
 			display: none;
 		}
+
 		button.burger {
 			margin-left: auto;
 		}
@@ -87,6 +90,7 @@ header.app-header {
 		nav {
 			display: flex;
 		}
+
 		button.burger {
 			display: none;
 		}

@@ -4,26 +4,23 @@ using Microsoft.AspNetCore.Mvc;
 using DevBlog.Application.Handlers.Command;
 using DevBlog.Application.Requests;
 using DevBlog.Application.Response;
-using DevBlog.Application.Settings;
 
 namespace DevBlog.Api.Controllers
 {
 	[Route("[controller]")]
 	public class ContactController : BaseController
 	{
-		private readonly IMediator mediator;
-        private readonly AppSettings appSettings;
+		private readonly IMediator _mediator;
 
-        public ContactController(IMediator mediator, AppSettings appSettings)
+        public ContactController(IMediator mediator)
         {
-            this.mediator = mediator;
-            this.appSettings = appSettings;
+            _mediator = mediator;
         }
 
         [HttpPost]
         public async Task<ActionResult<EntityCreatedResponseDto>> Post([FromBody] SubmitContactRequestDto contact)
         {
-            var response = await mediator.Send(new SubmitContact.Command(contact));
+            var response = await _mediator.Send(new SubmitContact.Command(contact));
             return ToActionResult(response);
         }
     }

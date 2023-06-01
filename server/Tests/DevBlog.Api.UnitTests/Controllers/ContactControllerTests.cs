@@ -6,7 +6,7 @@ using DevBlog.Api.Controllers;
 using DevBlog.Application.Handlers.Command;
 using DevBlog.Application.Requests;
 using DevBlog.Application.Response;
-using DevBlog.Application.Settings;
+using FluentAssertions;
 using Xunit;
 
 namespace DevBlog.Api.UnitTests.Controllers
@@ -14,13 +14,13 @@ namespace DevBlog.Api.UnitTests.Controllers
 	public class ContactControllerTests
 	{
 
-		private readonly ContactController sut;
-		private readonly Mock<IMediator> mockMediator;
+		private readonly ContactController _sut;
+		private readonly Mock<IMediator> _mockMediator;
 
 		public ContactControllerTests()
 		{
-			mockMediator = new Mock<IMediator>();
-			sut = new ContactController(mockMediator.Object, new AppSettings());
+			_mockMediator = new Mock<IMediator>();
+			_sut = new ContactController(_mockMediator.Object);
 		}
 
 		[Fact]
@@ -30,13 +30,14 @@ namespace DevBlog.Api.UnitTests.Controllers
 			var request = new SubmitContactRequestDto();
 			var entityCreatedResponse = EntityCreatedResponseDto.Create(23);
 
-			mockMediator.Setup(x => x.Send(It.Is<SubmitContact.Command>(y => y.Request == request), default))
+			_mockMediator.Setup(x => x.Send(It.Is<SubmitContact.Command>(y => y.Request == request), default))
 				.ReturnsAsync(ApiResponse<EntityCreatedResponseDto>.Ok(entityCreatedResponse));
 
 			// Act
-			var response = (OkObjectResult)(await sut.Post(request)).Result;
+			var response = (OkObjectResult)(await _sut.Post(request)).Result;
 
 			// Assert
+            response.Should().NotBeNull();
 			var result = response.Value as EntityCreatedResponseDto;
 			Assert.Equal(entityCreatedResponse.Id, result?.Id);
 		}

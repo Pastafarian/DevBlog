@@ -2,9 +2,11 @@
 using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
+#nullable disable
+
 namespace DevBlog.Domain.Migrations
 {
-    public partial class Init : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -46,7 +48,7 @@ namespace DevBlog.Domain.Migrations
                     Slug = table.Column<string>(type: "text", nullable: true),
                     Body = table.Column<string>(type: "text", nullable: true),
                     HeaderImage = table.Column<string>(type: "text", nullable: true),
-                    PublishDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    PublishDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     ReadMinutes = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
@@ -59,9 +61,9 @@ namespace DevBlog.Domain.Migrations
                 columns: new[] { "Id", "Body", "HeaderImage", "PublishDate", "ReadMinutes", "Slug", "Title" },
                 values: new object[,]
                 {
-                    { 1, "Hello world", "angular-card2.png", new DateTime(2021, 3, 31, 15, 34, 27, 461, DateTimeKind.Utc).AddTicks(9050), 8, "angular", "Angular" },
-                    { 2, "Hello world", "dotnet-card2.png", new DateTime(2021, 3, 31, 15, 34, 27, 461, DateTimeKind.Utc).AddTicks(9952), 6, "core", ".NET Core" },
-                    { 3, "Hello world", "code-card3.png", new DateTime(2021, 3, 31, 15, 34, 27, 461, DateTimeKind.Utc).AddTicks(9968), 9, "git", "Git Hub" }
+                    { 1, "Hello world", "angular-card2.png", new DateTime(2022, 7, 25, 18, 32, 56, 830, DateTimeKind.Utc).AddTicks(6335), 8, "angular", "Angular" },
+                    { 2, "Hello world", "dotnet-card2.png", new DateTime(2022, 7, 25, 18, 32, 56, 830, DateTimeKind.Utc).AddTicks(6336), 6, "core", ".NET Core" },
+                    { 3, "Hello world", "code-card3.png", new DateTime(2022, 7, 25, 18, 32, 56, 830, DateTimeKind.Utc).AddTicks(6337), 9, "git", "Git Hub" }
                 });
         }
 

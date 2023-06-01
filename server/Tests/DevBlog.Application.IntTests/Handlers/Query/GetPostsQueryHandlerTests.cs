@@ -4,34 +4,35 @@ using DevBlog.Application.Handlers.Query;
 using DevBlog.Domain;
 using DevBlog.Domain.Entities;
 using DevBlog.TestHelper;
+using Microsoft.Extensions.Logging;
+using Moq;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace DevBlog.Application.IntTests.Handlers.Query
 {
-	public class GetPostsQueryHandlerTests
+    public class GetPostsQueryHandlerTests : IClassFixture<ContextBuilder>
 	{
-		private readonly ITestOutputHelper _output;
-		private readonly ContextHelper th;
-		private readonly GetPosts.Handler sut;
+        private readonly ContextBuilder _contextBuilder;
+		private readonly GetPosts.Handler _sut;
 
-		public GetPostsQueryHandlerTests(ITestOutputHelper output)
-		{
-			_output = output;
-			th = new ContextHelper().BuildPgHelper();
-			sut = new GetPosts.Handler(th.Context);
+        public GetPostsQueryHandlerTests(ContextBuilder contextBuilder)
+        {
+            _contextBuilder = contextBuilder;
+			_contextBuilder.Build();
+            var mockLogger = new Mock<ILogger<GetPosts.Handler>>();
+            _sut = new GetPosts.Handler(contextBuilder.Context, mockLogger.Object);
 		}
 
 		[Fact]
 		public async void GivenNoPosts_WhenExecuted_ThenReturnEmptyList()
 		{
 			// Arrange
-			ClearDb(th.Context);
+			ClearDb(_contextBuilder.Context);
 
 			var query = new GetPosts.Query(new SiteUser());
 
 			// Act
-			var result = await sut.Handle(query, default);
+			var result = await _sut.Handle(query, default);
 
 			// Assert
 			Assert.Empty(result.Value);
@@ -41,11 +42,11 @@ namespace DevBlog.Application.IntTests.Handlers.Query
 		public async void GivenPublishedPostsPresent_WhenPublishedPostsSpecified_ThenNoUnpublishedPostsReturned()
 		{
 			// Arrange
-			PopulatedDb(th.Context);
+			PopulatedDb(_contextBuilder.Context);
 			var query = new GetPosts.Query(new SiteUser());
 
 			// Act
-			var postSummaries = (await sut.Handle(query, default)).Value;
+			var postSummaries = (await _sut.Handle(query, default)).Value;
 
 			// Assert
 			Assert.Equal(2, postSummaries.Count);
@@ -56,12 +57,12 @@ namespace DevBlog.Application.IntTests.Handlers.Query
 		public async void Handle_WhenUnpublishedPostsSpecified_ThenOnlyPublishedPostsReturned()
 		{
 			// Arrange
-			PopulatedDb(th.Context);
+			PopulatedDb(_contextBuilder.Context);
 
 			var query = new GetPosts.Query(new SiteUser());
 
 			// Act
-			var postSummaries = (await sut.Handle(query, default)).Value;
+			var postSummaries = (await _sut.Handle(query, default)).Value;
 
 			// Assert
 			Assert.Equal(2, postSummaries.Count);
@@ -71,9 +72,9 @@ namespace DevBlog.Application.IntTests.Handlers.Query
 		{
 			ClearDb(context);
 
-			context.Posts.Add(new Post { Id = 1, PublishDate = TestValues.DateInPast() });
-			context.Posts.Add(new Post { Id = 2, PublishDate = TestValues.DateInPast() });
-			context.Posts.Add(new Post { Id = 3, PublishDate = TestValues.DateInFuture() });
+			context.Posts.Add(new Post { Id = 1, PublishDate = TestValues.DateInPast().ToUniversalTime() });
+			context.Posts.Add(new Post { Id = 2, PublishDate = TestValues.DateInPast().ToUniversalTime() });
+			context.Posts.Add(new Post { Id = 3, PublishDate = TestValues.DateInFuture().ToUniversalTime() });
 			context.SaveChanges();
 		}
 

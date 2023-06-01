@@ -1,18 +1,21 @@
 <h3>Contact</h3>
-<mat-card *ngIf="vm$ | async as vm">
+<mat-card appearance="outlined" *ngIf="vm$ | async as vm">
 
     <form [formGroup]="vm.form" (ngSubmit)="save(vm.form)" novalidate class="contact-form">
 
         <div [@swooshInOutAnimation]="afterSubmitState">
+
             <mat-form-field class="full-width"
                 [ngClass]="{'has-error': (vm.form.get('name')?.touched || vm.form.get('name')?.dirty) }">
-                <input type="text" matInput formControlName="name" placeholder="Name (required)">
+                <mat-label>Name (required)</mat-label>
+                <input type="text" matInput formControlName="name">
                 <mat-error align="end">Please enter your name</mat-error>
                 <mat-hint align="end">{{ vm.form.get('name')?.value.length }} / 25</mat-hint>
             </mat-form-field>
 
             <mat-form-field class="full-width">
-                <input type="email" matInput formControlName="email" placeholder="Email Address (required)">
+                <mat-label>Email Address (required)</mat-label>
+                <input type="email" matInput formControlName="email">
                 <mat-error *ngIf="vm.form.get('email')?.hasError('required')" align="end">Please enter an email address
                 </mat-error>
                 <mat-error *ngIf="vm.form.get('email')?.hasError('maxlength')" align="end">The email addresss must be
@@ -24,7 +27,8 @@
                 <mat-hint align="end">{{ vm.form.get('email')?.value.length }} / 130</mat-hint>
             </mat-form-field>
             <mat-form-field class="full-width">
-                <textarea rows="5" matInput formControlName="message" placeholder="Message (required)"></textarea>
+                <mat-label>Message (required)</mat-label>
+                <textarea rows="5" matInput formControlName="message"></textarea>
                 <mat-error *ngIf="vm.form.get('message')?.hasError('required')" align="end">Please enter a message
                 </mat-error>
                 <mat-error *ngIf="vm.form.get('message')?.hasError('maxlength')" align="end">The message must be less

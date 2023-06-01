@@ -1,10 +1,10 @@
-FROM mcr.microsoft.com/dotnet/core/aspnet:3.1 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
 ENV ASPNETCORE_URLS http://+:8800
 EXPOSE 8800
 
 WORKDIR /app
 
-FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build
+FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
 COPY . .
 

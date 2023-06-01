@@ -42,7 +42,7 @@ export class BlogComponent implements OnInit {
           })
         )
       ),
-      switchMap(filterTerm => this.filteredPosts$.pipe(
+      switchMap(filterTerm => this.store.select<(filter: string) => Post[]>(PostState.selectFilteredPosts).pipe(
         map(filteredPosts => filteredPosts(filterTerm))
       )),
       map(posts => {

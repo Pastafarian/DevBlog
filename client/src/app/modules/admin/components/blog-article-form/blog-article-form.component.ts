@@ -24,7 +24,7 @@ export class BlogArticleFormComponent implements OnInit {
 	formMode: FormMode;
 
 	@Input()
-	post: Post;
+	post: Post | null;
 
 	processing = false;
 	ready = false;
@@ -58,15 +58,15 @@ export class BlogArticleFormComponent implements OnInit {
 	ngOnInit(): void {
 
 		this.form = this.fb.group({
-			id: [((this.post && this.post.id) || '') && this.post.id],
-			title: [((this.post && this.post.title) || '') && this.post.title, [Validators.required, Validators.maxLength(70), Validators.minLength(1)]],
-			slug: [((this.post && this.post.slug) || '') && this.post.slug, [Validators.required, Validators.maxLength(70), Validators.minLength(1)]],
-			body: [((this.post && this.post.body) || '') && this.post.body],
-			publishDate: [((this.post && this.post.publishDate) || '') && this.post.publishDate, [Validators.required]],
+			id: [((this.post && this.post.id) || '') && this.post?.id],
+			title: [((this.post && this.post.title) || '') && this.post?.title, [Validators.required, Validators.maxLength(70), Validators.minLength(1)]],
+			slug: [((this.post && this.post.slug) || '') && this.post?.slug, [Validators.required, Validators.maxLength(70), Validators.minLength(1)]],
+			body: [((this.post && this.post.body) || '') && this.post?.body],
+			publishDate: [((this.post && this.post.publishDate) || '') && this.post?.publishDate, [Validators.required]],
 			headerImage: []
 		});
 
-		this.preview = ((this.post && this.post.body) || '') && this.post.body;
+		this.preview = ((this.post && this.post.body) || '') && (this.post?.body ?? "");
 
 		if (this.formMode === 'Add' || (this.formMode === 'Edit' && this.post)) {
 			this.ready = true;

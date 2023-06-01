@@ -10,11 +10,11 @@ namespace DevBlog.Application.Dtos
 
 		public string Slug
 		{
-			get => slug.ToLower();
-			set => slug = value.ToLower();
+			get => _slug.ToLower();
+			set => _slug = value.ToLower();
 		}
 		
-		private string slug;
+		private string _slug;
 
 		public DateTime PublishDate { get; set; }
 	}

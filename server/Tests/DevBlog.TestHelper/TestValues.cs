@@ -1,11 +1,13 @@
 ﻿using System;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 
 namespace DevBlog.TestHelper
 {
 	public static class TestValues
 	{
-        public const string TestDbConnectionString = "Host=localhost;Port=5432;Username=a;Password=a;Database=DevBlogTestDb";
 
 		public static string UniqueEmail()
 		{
@@ -15,13 +17,18 @@ namespace DevBlog.TestHelper
 		public static string UniqueString(int length)
 		{
 			var s = Regex.Replace(Convert.ToBase64String(Guid.NewGuid().ToByteArray()), "[/+=]", "");
-			return length == 0 ? s : s.Substring(0, length);
+			return length == 0 ? s : s[..length];
 		}
 
-		public static string UniquePassword()
+        public static string UniqueUrl()
+        {
+            return "https://www." + (UniqueString(5) + ".com/" + UniqueString(5)).ToLower();
+        }
+
+        public static string UniquePassword()
 		{
 			var s = Regex.Replace(Convert.ToBase64String(Guid.NewGuid().ToByteArray()), "[/+=]", "");
-			return s.Substring(0, 6) + "1tT*";
+			return s[..6] + "1tT*";
 		}
 
 		public static bool RandomBool()
@@ -38,5 +45,14 @@ namespace DevBlog.TestHelper
 		{
 			return DateTime.Now.AddYears(1);
 		}
-	}
+
+        public static ByteArrayContent SerializeObjectToByteArrayContent<TValue>(TValue obj)
+        {
+            var json = JsonSerializer.Serialize(obj);
+            var buffer = System.Text.Encoding.UTF8.GetBytes(json);
+            var byteContent = new ByteArrayContent(buffer);
+            byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            return byteContent;
+        }
+    }
 }

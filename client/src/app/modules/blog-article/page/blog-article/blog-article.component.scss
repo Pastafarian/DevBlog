@@ -1,4 +1,8 @@
-@use "~@angular/material/theming" as t;
+@use '@angular/material' as t;
+
+// @import '~@angular/material/theming';
+
+/* @use "~@angular/material/theming" as t;*/
 
 time {
 	font-size: 13px;

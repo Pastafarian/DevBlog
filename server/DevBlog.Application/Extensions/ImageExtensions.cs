@@ -18,7 +18,7 @@ namespace DevBlog.Application.Extensions
 			{
 
 				case ImageFormat.Jpg:
-					image.SaveAsJpeg(memoryStream, new JpegEncoder { Quality = 90, Subsample = JpegSubsample.Ratio444 });
+					image.SaveAsJpeg(memoryStream, new JpegEncoder { Quality = 90 });
 					break;
 				case ImageFormat.Png:
 					image.SaveAsPng(memoryStream, new PngEncoder { CompressionLevel = PngCompressionLevel.Level6 });

@@ -18,14 +18,14 @@ namespace DevBlog.Api.Middleware
 	// ReSharper disable once ClassNeverInstantiated.Global
 	public class ExceptionHandlerMiddleware : IMiddleware
 	{
-		private readonly IActionResultExecutor<ObjectResult> executor;
-		private readonly ILogger logger;
+		private readonly IActionResultExecutor<ObjectResult> _executor;
+		private readonly ILogger _logger;
 		private static readonly ActionDescriptor EmptyActionDescriptor = new ActionDescriptor();
 
 		public ExceptionHandlerMiddleware(IActionResultExecutor<ObjectResult> executor, ILoggerFactory loggerFactory)
 		{
-			this.executor = executor;
-			logger = loggerFactory.CreateLogger<ExceptionHandlerMiddleware>();
+			_executor = executor;
+			_logger = loggerFactory.CreateLogger<ExceptionHandlerMiddleware>();
 		}
 
 		public async Task InvokeAsync(HttpContext context, RequestDelegate next)
@@ -36,11 +36,11 @@ namespace DevBlog.Api.Middleware
 			}
 			catch (Exception ex)
 			{
-				logger.LogError(ex, $"An unhandled exception has occurred while executing the request. Url: {context.Request.GetDisplayUrl()}. Request Data: " + GetRequestData(context));
+				_logger.LogError(ex, $"An unhandled exception has occurred while executing the request. Url: {context.Request.GetDisplayUrl()}. Request Data: " + GetRequestData(context));
 
 				if (context.Response.HasStarted) throw;
 				
-				var routeData = context.GetRouteData() ?? new RouteData();
+				var routeData = context.GetRouteData();
 
 				ClearCacheHeaders(context.Response);
 
@@ -51,7 +51,7 @@ namespace DevBlog.Api.Middleware
 					StatusCode = (int)HttpStatusCode.InternalServerError,
 				};
 
-				await executor.ExecuteAsync(actionContext, result);
+				await _executor.ExecuteAsync(actionContext, result);
 			}
 		}
 
@@ -64,7 +64,7 @@ namespace DevBlog.Api.Middleware
 				sb.Append("Form variables:");
 				foreach (var (key, value) in context.Request.Form)
 				{
-					sb.AppendFormat("Key={0}, Value={1}<br/>", key, value);
+                    sb.Append($"Key={key}, Value={value}<br/>");
 				}
 			}
 

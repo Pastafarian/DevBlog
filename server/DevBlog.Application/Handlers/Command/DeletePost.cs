@@ -1,14 +1,16 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using DevBlog.Domain;
+using DevBlog.Application.Response;
 
 namespace DevBlog.Application.Handlers.Command
 {
 	public class DeletePost
 	{
-		public class Command : IRequest
+		public class Command : IRequest<ApiResponse>
 		{
 			public int PostId { get; set; }
 
@@ -18,22 +20,35 @@ namespace DevBlog.Application.Handlers.Command
 			}
 		}
 
-
-		public class Handler : AsyncRequestHandler<Command>
+		public class Handler : IRequestHandler<Command, ApiResponse>
 		{
-			private readonly Context context;
+			private readonly Context _context;
 
 			public Handler(Context context)
 			{
-				this.context = context;
+				_context = context;
 			}
 
-			protected override async Task Handle(Command command, CancellationToken cancellationToken)
+			public async Task<ApiResponse> Handle(Command command, CancellationToken cancellationToken)
 			{
-				var post = await context.Posts.SingleAsync(x => x.Id == command.PostId, cancellationToken);
-				context.Posts.Remove(post);
-				await context.SaveChangesAsync(cancellationToken);
-			}
+                try
+                {
+                    var post = await _context.Posts.SingleOrDefaultAsync(x => x.Id == command.PostId, cancellationToken);
+
+                    if (post == null)
+                        return ApiResponse.NotFound($"Error: Unable to find post with id {command.PostId} to delete.");
+
+                    _context.Posts.Remove(post);
+                    await _context.SaveChangesAsync(cancellationToken);
+                    return ApiResponse.Ok();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    throw;
+                }
+				
+            }
 		}
 	}
 }

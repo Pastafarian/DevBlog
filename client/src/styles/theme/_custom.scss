@@ -1,12 +1,27 @@
-@use "~@angular/material/theming" as t;
-@include t.mat-core();
+@use "@angular/material/theming" as t;
+@use '@angular/material' as mat;
+
+@include mat.core();
 
 $app-primary: t.mat-palette(t.$mat-red);
 $app-accent: t.mat-palette(t.$mat-pink);
 $app-warn: t.mat-palette(t.$mat-purple);
-$app-theme: t.mat-light-theme($app-primary, $app-accent, $app-warn);
+$app-theme: t.mat-light-theme((color: (primary: $app-primary,
+                accent: $app-accent,
+                warn: $app-warn ),
+            typography: mat.define-typography-config(),
+            density: 0,
+        ));
 
 @include t.angular-material-theme($app-theme);
+
+.mdc-text-field--filled:not(.mdc-text-field--disabled) {
+    background-color: white !important;
+}
+
+.mat-mdc-card {
+    padding: 16px;
+}
 
 /*
 Can add components individually if we need to reduce package size: 

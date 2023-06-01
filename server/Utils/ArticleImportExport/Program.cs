@@ -7,7 +7,6 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 using Dapper;
-using NpgsqlTypes;
 using Console = Colorful.Console;
 
 var runner = new Runner();
@@ -15,21 +14,21 @@ runner.Run();
 
 public class Runner
 {
-    private bool quit;
+    private bool _quit;
 
-    private string remoteConnectionString;
-    private string localConnectionString;
-    private string exportsDirectory;
+    private string _remoteConnectionString;
+    private string _localConnectionString;
+    private string _exportsDirectory;
 
     public void Run()
     {
-        remoteConnectionString = ConfigurationManager.AppSettings.Get("RemoteConnectionString");
-        localConnectionString = ConfigurationManager.AppSettings.Get("LocalConnectionString");
-        exportsDirectory = ConfigurationManager.AppSettings.Get("ExportsDirectory");
+        _remoteConnectionString = ConfigurationManager.AppSettings.Get("RemoteConnectionString");
+        _localConnectionString = ConfigurationManager.AppSettings.Get("LocalConnectionString");
+        _exportsDirectory = ConfigurationManager.AppSettings.Get("ExportsDirectory");
         
         Console.WriteAscii("Blog Import Export", Color.Green);
         
-        while (!quit)
+        while (!_quit)
         {
             Console.WriteLine("(E)xport, (I)mport, (Q)uit.", Color.Green);
             var option =  Console.ReadLine().ToLower().Trim();
@@ -43,7 +42,7 @@ public class Runner
                     Import();
                     break;
                 case "q":
-                    quit = true;
+                    _quit = true;
                     break;
             }
         }
@@ -55,7 +54,7 @@ public class Runner
 
         var env = Console.ReadLine().ToLower().Trim();
 
-        var connectionString = env == "r" ? remoteConnectionString : localConnectionString;
+        var connectionString = env == "r" ? _remoteConnectionString : _localConnectionString;
         
         using var connection = new NpgsqlConnection(connectionString);
         var results = connection.Query<Post>("SELECT \"Id\", \"Title\", \"Slug\", \"Body\", \"HeaderImage\", \"PublishDate\", \"ReadMinutes\" FROM public.\"Posts\";").ToList();
@@ -67,13 +66,13 @@ public class Runner
         }
 
 
-        File.AppendAllTextAsync($"{exportsDirectory}export_{DateTime.Now.Year}-{DateTime.Now.Month}-{DateTime.Now.Day}-{DateTime.Now.Hour}-{DateTime.Now.Minute}-{DateTime.Now.Second}-{env}.json", JsonSerializer.Serialize(results));
+        File.AppendAllTextAsync($"{_exportsDirectory}export_{DateTime.Now.Year}-{DateTime.Now.Month}-{DateTime.Now.Day}-{DateTime.Now.Hour}-{DateTime.Now.Minute}-{DateTime.Now.Second}-{env}.json", JsonSerializer.Serialize(results));
     }
 
     private void Import()
     {
         Console.WriteLine("Select import file - enter number and hit enter", Color.Green);
-        var files = Directory.EnumerateFiles(exportsDirectory).ToList();
+        var files = Directory.EnumerateFiles(_exportsDirectory).ToList();
 
         var count = 1;
         foreach (var file in files)
@@ -98,7 +97,7 @@ public class Runner
         Console.WriteLine("Import to (L)ocal or (R)emote?", Color.Green);
 
         var env = Console.ReadLine().ToLower().Trim();
-        var connectionString = env == "r" ? remoteConnectionString : localConnectionString;
+        var connectionString = env == "r" ? _remoteConnectionString : _localConnectionString;
         using var connection = new NpgsqlConnection(connectionString);
         connection.Execute("DELETE FROM public.\"Posts\"");
         
@@ -107,7 +106,7 @@ public class Runner
             connection.Execute(
                 @"INSERT INTO public.""Posts""(""Title"", ""Slug"", ""Body"", ""HeaderImage"", ""PublishDate"", ""ReadMinutes"")
 
-            VALUES('" + post.Title + "', '"+ post.Slug +"', '"+ post.Body+"', '"+ post.HeaderImage +"', '"+ new NpgsqlDateTime(post.PublishDate.DateTime) + "', '"+post.ReadMinutes +"'); ");
+            VALUES('" + post.Title + "', '"+ post.Slug +"', '"+ post.Body+"', '"+ post.HeaderImage +"', '"+ post.PublishDate.DateTime + "', '"+post.ReadMinutes +"'); ");
         }
 
     }

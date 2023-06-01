@@ -1,0 +1,20 @@
+﻿{
+  "Logging": {
+    "LogFileLocation": "Logs/myapp.txt",
+    "ApplicationName": "DevBlog.Api",
+    "LogEventLevel": "Debug",
+    "SeqUrl": "http://localhost:5341"
+  },
+  "ConnectionStrings": {
+    "DevBlog": "Host=localhost;Port=5555;Username=sa;Password=password;Database=devblog_test_db"
+  },
+  "AppSettings": {
+    "Environment": "Default",
+    "FileStoragePath": "/home/vsts/work/1/s/server/DevBlog.Api/Logs/",
+    "RunMigrations": false
+  },
+  "Auth0": {
+    "Domain": "stephenadam.eu.auth0.com",
+    "ApiIdentifier": "http://stephenadam.api.io"
+  }
+}

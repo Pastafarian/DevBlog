@@ -2,7 +2,7 @@ version: "3"
 
 services:
   database:
-    image: postgres
+    image: postgres:14-alpine
     restart: unless-stopped
     env_file:
       - database.env
@@ -13,18 +13,17 @@ services:
     networks:
       - network
   api:
-    image: stephenadam/devblog_api:latest
+    image: stephenadam/devblog_api:151
     ports:
       - 6578:8800
-    expose:
-      - 6578
-      - 8800
     networks:
       - network
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
     depends_on:
       - database
+    volumes:
+      - ./data/images:/home/ubuntu/saved
   certbot:
     image: certbot/certbot
     restart: unless-stopped
@@ -32,13 +31,14 @@ services:
       - ./data/certbot/conf:/etc/letsencrypt
       - ./data/certbot/www:/var/www/certbot
     entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
-  nginx:
-    image: nginx:1.15-alpine
+  web:
+    image: stephenadam/devblog_web:151
     restart: unless-stopped
     volumes:
-      - ./data/nginx:/etc/nginx/conf.d
+      #- ./data/nginx:/etc/nginx/conf.d
       - ./data/certbot/conf:/etc/letsencrypt
       - ./data/certbot/www:/var/www/certbot
+      - ./data/images:/usr/share/nginx/html/images
     ports:
       - "80:80"
       - "443:443"
@@ -47,10 +47,9 @@ services:
       - network
     depends_on:
       - database
-
 volumes:
   database-data:
   node-modules:
 networks:
-  network:
+ network:
     driver: bridge

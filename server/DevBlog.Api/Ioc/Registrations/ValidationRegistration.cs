@@ -1,13 +1,14 @@
-﻿using SimpleInjector;
-using DevBlog.Application.Requests.Validators;
+﻿using DevBlog.Application.Requests.Validators;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace DevBlog.Api.Ioc.Registrations
 {
-    public class ValidationRegistration
+    public static class ValidationRegistration
     {
-		public static void Register(Container container)
+		public static void RegisterValidation(this IServiceCollection services)
         {
-            container.Register<SubmitContactRequestValidator, SubmitContactRequestValidator>();
+            services.AddTransient<SubmitContactRequestValidator, SubmitContactRequestValidator>();
+            services.AddTransient<UpdatePostRequestValidator, UpdatePostRequestValidator>();
         }
 	}
 }

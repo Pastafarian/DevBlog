@@ -15,12 +15,12 @@
     "moduleResolution": "node",
     "importHelpers": true,
     "strictPropertyInitialization": false,
-    "target": "es2015",
-    "module": "es2020",
+    "target": "es2022",
+    "module": "es2022",
     "esModuleInterop": true,
     "noImplicitAny": false,
     "lib": [
-      "es2018",
+      "ES2022",
       "dom"
     ],
     "paths": {

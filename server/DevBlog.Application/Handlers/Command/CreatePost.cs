@@ -25,31 +25,31 @@ namespace DevBlog.Application.Handlers.Command
 
 		public class Handler : IRequestHandler<Command, ApiResponse<PostDto>>
 		{
-			private readonly Context context;
-			private readonly IMapper mapper;
-			private readonly IImageStorageService imageStorageService;
+			private readonly Context _context;
+			private readonly IMapper _mapper;
+			private readonly IImageStorageService _imageStorageService;
 			
 			public Handler(Context context, IMapper mapper, IImageStorageService imageStorageService)
 			{
-				this.mapper = mapper;
-				this.imageStorageService = imageStorageService;
-				this.context = context;
+				_mapper = mapper;
+				_imageStorageService = imageStorageService;
+				_context = context;
 			}
 
 			public async Task<ApiResponse<PostDto>> Handle(Command command, CancellationToken cancellationToken)
 			{
-				var post = mapper.Map<CreatePostDto, Post>(command.Post);
+				var post = _mapper.Map<CreatePostDto, Post>(command.Post);
 
-				if (await context.Posts.AnyAsync(x => x.Slug == command.Post.Slug, cancellationToken)) return ApiResponse<PostDto>.BadRequest("A post with that slug already exists");
+				if (await _context.Posts.AnyAsync(x => x.Slug == command.Post.Slug, cancellationToken)) return ApiResponse<PostDto>.BadRequest("A post with that slug already exists");
 
 				if (!string.IsNullOrWhiteSpace(command.Post.HeaderImage))
-					post.HeaderImage = await imageStorageService.StoreImage(command.Post.HeaderImage, command.Post.Title, cancellationToken);
+					post.HeaderImage = await _imageStorageService.StoreImage(command.Post.HeaderImage, command.Post.Title, cancellationToken);
 
-				await context.Posts.AddAsync(post, cancellationToken);
+				await _context.Posts.AddAsync(post, cancellationToken);
 
-				await context.SaveChangesAsync(cancellationToken);
+				await _context.SaveChangesAsync(cancellationToken);
 
-				return ApiResponse<PostDto>.Ok(mapper.Map<PostDto>(post));
+				return ApiResponse<PostDto>.Ok(_mapper.Map<PostDto>(post));
 			}
 		}
 	}

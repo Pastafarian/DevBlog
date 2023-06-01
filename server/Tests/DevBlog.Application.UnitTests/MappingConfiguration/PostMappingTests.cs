@@ -2,23 +2,23 @@
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
-using AutoMapper.Configuration;
-using SimpleInjector;
 using DevBlog.Application.Dtos;
 using DevBlog.Application.MappingConfiguration;
 using DevBlog.Domain.Entities;
 using Xunit;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace DevBlog.Application.UnitTests.MappingConfiguration
 {
     public class PostMappingTests
     {
-        private readonly IMapper mapper;
+        private readonly IMapper _mapper;
 
         public PostMappingTests()
         {
-            var container = new Container();
-            mapper = GetMapper(container);
+            IServiceCollection services = new ServiceCollection();
+            services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
+            _mapper = services.BuildServiceProvider().GetService<IMapper>();
         }
 
         [Fact]
@@ -34,7 +34,7 @@ namespace DevBlog.Application.UnitTests.MappingConfiguration
             };
 
             // Act
-            var post = mapper.Map<PostDto, Post>(postDto);
+            var post = _mapper.Map<PostDto, Post>(postDto);
 
             // Assert
             Assert.Equal(post.Title, postDto.Title);
@@ -60,7 +60,7 @@ namespace DevBlog.Application.UnitTests.MappingConfiguration
             };
 
             // Act
-            var mapped = mapper.Map<List<Post>, List<PostDto>>(new List<Post> { post }).First();
+            var mapped = _mapper.Map<List<Post>, List<PostDto>>(new List<Post> { post }).First();
 
             // Assert
             Assert.Equal(post.HeaderImage, mapped.HeaderImage);
@@ -78,23 +78,10 @@ namespace DevBlog.Application.UnitTests.MappingConfiguration
             var posts = Enumerable.Repeat(new Post(), 20).ToList();
 
             // Act
-            var result = mapper.Map<List<Post>, List<PostDto>>(posts);
+            var result = _mapper.Map<List<Post>, List<PostDto>>(posts);
 
             // Assert
             Assert.Equal(20, result.Count);
-        }
-
-        private static IMapper GetMapper(Container container)
-        {
-            var mce = new MapperConfigurationExpression();
-            mce.ConstructServicesUsing(container.GetInstance);
-
-            mce.AddMaps(typeof(AutoMapperProfile).Assembly);
-
-            var mc = new MapperConfiguration(mce);
-            mc.AssertConfigurationIsValid();
-
-            return new Mapper(mc, container.GetInstance);
         }
     }
 }

@@ -26,22 +26,22 @@ namespace DevBlog.Application.Handlers.Command
 
 		public class Handler : IRequestHandler<Command, ApiResponse<ImageUploadedResponseDto>>
 		{
-			private readonly Context context;
-			private readonly IImageStorageService imageStorageService;
+			private readonly Context _context;
+			private readonly IImageStorageService _imageStorageService;
 
 			public Handler(Context context, IImageStorageService imageStorageService)
 			{
-				this.context = context;
-				this.imageStorageService = imageStorageService;
+				_context = context;
+				_imageStorageService = imageStorageService;
 			}
 
 			public async Task<ApiResponse<ImageUploadedResponseDto>> Handle(Command command, CancellationToken cancellationToken)
 			{
-				var imageUrl = await imageStorageService.StoreImage(command.Content, command.FileName, cancellationToken);
+				var imageUrl = await _imageStorageService.StoreImage(command.Content, command.FileName, cancellationToken);
 
-				await context.File.AddAsync(new File { FileName = imageUrl }, cancellationToken);
+				await _context.File.AddAsync(new File { FileName = imageUrl }, cancellationToken);
 
-				await context.SaveChangesAsync(cancellationToken);
+				await _context.SaveChangesAsync(cancellationToken);
 
 				return ApiResponse<ImageUploadedResponseDto>.Ok(new ImageUploadedResponseDto(imageUrl));
 			}

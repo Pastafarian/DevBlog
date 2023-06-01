@@ -10,6 +10,7 @@ using DevBlog.Application.Dtos;
 using DevBlog.Application.Extensions;
 using DevBlog.Application.Response;
 using DevBlog.Domain;
+using Microsoft.Extensions.Logging;
 
 namespace DevBlog.Application.Handlers.Query
 {
@@ -30,19 +31,22 @@ namespace DevBlog.Application.Handlers.Query
 		/// </summary>
 		public class Handler : IRequestHandler<Query, ApiResponse<List<PostDto>>>
 		{
-			private readonly Context context;
+			private readonly Context _context;
+            private readonly ILogger<Handler> _logger;
 
-			public Handler(Context context)
-			{
-				this.context = context;
-			}
+            public Handler(Context context, ILogger<Handler> logger)
+            {
+                _context = context;
+                _logger = logger;
+            }
 
 			public async Task<ApiResponse<List<PostDto>>> Handle(Query query, CancellationToken cancellationToken)
 			{
-				var posts = context.Posts.AsNoTracking();
+				var posts = _context.Posts.AsNoTracking();
+                _logger.LogInformation("Getting posts");
 
 
-				if (!query.SiteUser.IsAdmin) posts = posts.Where(x => x.PublishDate != null && x.PublishDate < DateTime.UtcNow);
+                if (!query.SiteUser.IsAdmin) posts = posts.Where(x => x.PublishDate != null && x.PublishDate < DateTime.UtcNow);
 
 				var postSummaries = await posts.OrderByDescending(x => x.PublishDate)
 						.Select(x => new PostDto

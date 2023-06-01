@@ -12,18 +12,18 @@ namespace DevBlog.Api.Controllers
 	[Route("[controller]")]
 	public class ImageController : BaseController
 	{
-		private readonly IMediator mediator;
+		private readonly IMediator _mediator;
 
 		public ImageController(IMediator mediator)
 		{
-			this.mediator = mediator;
+			_mediator = mediator;
 		}
 
 		[Route("upload")]
 		[HttpPost]
 		public async Task<ActionResult<ImageUploadedResponseDto>> Upload(IFormFile formFile)
 		{
-			var result = await mediator.Send(new UploadImage.Command(formFile.ReadBytes(), formFile.FileName), CancellationToken.None);
+			var result = await _mediator.Send(new UploadImage.Command(formFile.ReadBytes(), formFile.FileName), CancellationToken.None);
 
 			return ToActionResult(result);
 		}

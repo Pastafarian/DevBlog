@@ -9,7 +9,7 @@ import { map, switchMap, tap } from 'rxjs/operators';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 interface Vm {
-  post: Post;
+  post: Post | null;
 }
 
 @UntilDestroy()
@@ -24,7 +24,7 @@ export class BlogArticleComponent implements OnInit {
 
   vm$: Observable<Vm>;
 
-  post: Post;
+  post: Post | null;
 
   ngOnInit() {
 

@@ -11,7 +11,7 @@ services:
     volumes:
       - database-data:/var/lib/postgresql/data/
     networks: 
-      - network  
+      - network 
   api:
     build:
       context: server

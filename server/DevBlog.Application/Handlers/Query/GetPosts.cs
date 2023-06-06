@@ -43,7 +43,7 @@ namespace DevBlog.Application.Handlers.Query
 			public async Task<ApiResponse<List<PostDto>>> Handle(Query query, CancellationToken cancellationToken)
 			{
 				var posts = _context.Posts.AsNoTracking();
-                _logger.LogInformation("Getting posts");
+                _logger.LogInformation("GetPosts called: SiteUser - IsAdmin: {IsAdmin}, IsAuthenticated: {IsAuthenticated}", query.SiteUser.IsAdmin, query.SiteUser.IsAuthenticated);
 
 
                 if (!query.SiteUser.IsAdmin) posts = posts.Where(x => x.PublishDate != null && x.PublishDate < DateTime.UtcNow);

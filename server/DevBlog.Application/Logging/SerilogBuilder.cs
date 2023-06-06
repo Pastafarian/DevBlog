@@ -14,12 +14,6 @@ namespace DevBlog.Application.Logging
                 .CreateLogger()
                 .ForContext(typeof(TImplementingType));
 
-            Serilog.Debugging.SelfLog.Enable(x =>
-            {
-                Debug.Write(x);
-                logger.Warning(x);
-            });
-
             return logger;
         }
 

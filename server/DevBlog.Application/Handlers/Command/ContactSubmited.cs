@@ -50,11 +50,13 @@ namespace DevBlog.Application.Handlers.Command
                 if (!validationResponse.IsValid)
                     return ApiResponse<EntityCreatedResponseDto>.BadRequest(validationResponse.ToString());
 
-				var contact = _mapper.Map<Contact>(command.Request);
+                cancellationToken.ThrowIfCancellationRequested();
+
+                var contact = _mapper.Map<Contact>(command.Request);
 				await _context.Contacts.AddAsync(contact, cancellationToken);
 				await _context.SaveChangesAsync(cancellationToken);
 
-                await _sendGridService.SendEmailAsync(contact.Name, contact.Email, contact.Message);
+                await _sendGridService.SendEmailAsync(contact.Name, contact.Email, contact.Message, cancellationToken);
 
                 return ApiResponse<EntityCreatedResponseDto>.Ok(EntityCreatedResponseDto.Create(contact.Id)); 
 			}

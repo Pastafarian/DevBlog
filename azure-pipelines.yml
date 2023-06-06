@@ -40,7 +40,6 @@ stages:
         command: 'build'
         projects: '**/*.sln'
         arguments: '--configuration $(buildConfiguration)'
-        displayName: 'dotnet build $(buildConfiguration)'
     - task: DotNetCoreCLI@2
       displayName: 'dotnet test'
       inputs:
@@ -56,7 +55,8 @@ stages:
         repository: stephenadam/devblog_api
         dockerfile: 'server/dockerfile'
         tags: |
-           $(tag)
+          $(tag)
+
     - task: Docker@2
       displayName: Build and push Angular app image
       inputs:
@@ -65,4 +65,21 @@ stages:
         repository: stephenadam/devblog_web
         dockerfile: 'client/Dockerfile'
         tags: |
-           $(tag)
+          $(tag)
+
+  - deployment: VMDeploy
+    dependsOn: BuildFromSource
+    displayName: Deploy to VM
+    environment: 
+      name: Heztner
+      resourceType: virtualMachine
+    strategy:
+      runOnce:
+          deploy:   
+            steps:
+              - bash: docker pull stephenadam/devblog_api:$(tag)
+              - bash: docker pull stephenadam/devblog_web:$(tag)
+              - bash: export tag=$(tag)
+                displayName: Set tag environment variable
+              - bash: docker-compose down
+              - bash: docker-compose up -d
